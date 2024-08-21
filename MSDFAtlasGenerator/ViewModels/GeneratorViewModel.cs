@@ -48,7 +48,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     }
 
     [RelayCommand]
-    private void Generate()
+    private static void Generate()
     {
 
     }
