@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using MSDFAtlasGenerator.Contracts;
+using MSDFAtlasGenerator.Enums;
 using MSDFAtlasGenerator.Views;
 
 namespace MSDFAtlasGenerator.ViewModels;
@@ -12,25 +13,19 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     private string? fontFilePath;
 
     [ObservableProperty]
+    private string? charsetFilePath;
+
+    [ObservableProperty]
+    private bool isAllGlyphs;
+
+    [ObservableProperty]
+    private AtlasType atlasType = AtlasType.MSDF;
+
+    [ObservableProperty]
     private double fontSize = 64;
 
     [ObservableProperty]
     private string? outputDirectoryPath;
-
-    [RelayCommand]
-    private void BrowseFontFile()
-    {
-        OpenFileDialog openFileDialog = new()
-        {
-            Filter = "Font Files (*.ttf, *.otf)|*.ttf;*.otf|All Files (*.*)|*.*",
-            Multiselect = false
-        };
-
-        if (openFileDialog.ShowDialog() == true)
-        {
-            FontFilePath = openFileDialog.FileName;
-        }
-    }
 
     [RelayCommand]
     private void BrowseOutputDirectory()
@@ -48,8 +43,8 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     }
 
     [RelayCommand]
-    private static void Generate()
+    private void Generate()
     {
-
+        Console.WriteLine(IsAllGlyphs);
     }
 }

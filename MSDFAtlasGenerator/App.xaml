@@ -3,6 +3,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MSDFAtlasGenerator"
+             xmlns:converters="clr-namespace:MSDFAtlasGenerator.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -10,6 +11,8 @@
                 <ui:ThemesDictionary Theme="Light" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
+
+            <converters:IsStringEmptyToVisibilityConverter x:Key="IsStringEmptyToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
