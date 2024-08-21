@@ -1,0 +1,63 @@
+﻿<ui:FluentWindow x:Class="MSDFAtlasGenerator.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:views="clr-namespace:MSDFAtlasGenerator.Views"
+                 mc:Ignorable="d"
+                 Title="MainWindow"
+                 Height="800"
+                 Width="1400"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica"
+                 WindowCornerPreference="Round"
+                 WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0"
+                     Title="MSDF Atlas Generator" />
+
+        <ui:NavigationView x:Name="RootNavigation"
+                           Grid.Row="1"
+                           PaneDisplayMode="LeftFluent">
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem NavigationCacheMode="Enabled"
+                                       TargetPageType="{x:Type views:MainPage}">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="Home24" />
+                    </ui:NavigationViewItem.Icon>
+
+                    <TextBlock FontSize="10"
+                               Text="Home" />
+                </ui:NavigationViewItem>
+
+                <ui:NavigationViewItem NavigationCacheMode="Enabled"
+                                       TargetPageType="{x:Type views:GeneratorPage}">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="DrawShape24" />
+                    </ui:NavigationViewItem.Icon>
+
+                    <TextBlock FontSize="10"
+                               Text="Generator" />
+                </ui:NavigationViewItem>
+            </ui:NavigationView.MenuItems>
+
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem NavigationCacheMode="Disabled"
+                                       TargetPageType="{x:Type views:SettingsPage}">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="Settings24" />
+                    </ui:NavigationViewItem.Icon>
+
+                    <TextBlock FontSize="10"
+                               Text="Settings" />
+                </ui:NavigationViewItem>
+            </ui:NavigationView.FooterMenuItems>
+        </ui:NavigationView>
+    </Grid>
+</ui:FluentWindow>
