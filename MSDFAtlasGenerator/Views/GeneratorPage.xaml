@@ -4,12 +4,84 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:contracts="clr-namespace:MSDFAtlasGenerator.Contracts"
+                xmlns:viewmodels="clr-namespace:MSDFAtlasGenerator.ViewModels"
                 mc:Ignorable="d"
                 d:DesignHeight="450"
                 d:DesignWidth="800"
+                d:DataContext="{d:DesignInstance viewmodels:GeneratorViewModel}"
                 Title="GeneratorPage">
+    <Grid Margin="42">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
 
-    <Grid>
+        <DockPanel>
+            <TextBlock FontSize="20"
+                       FontWeight="Medium"
+                       Text="Generate MSDF Atlas"
+                       DockPanel.Dock="Top" />
 
+            <ScrollViewer Margin="0,12,0,0">
+                <StackPanel>
+                    <TextBlock Text="Font File" />
+
+                    <Button Margin="0,12,0,0"
+                            Content="Browse"
+                            Command="{Binding BrowseFontFileCommand}" />
+
+                    <TextBlock Margin="0,12,0,0"
+                               Text="{Binding FontFilePath}" />
+
+                    <TextBlock Margin="0,24,0,0"
+                               Text="Font Em Size" />
+
+                    <TextBox Margin="0,12,0,0"
+                             Text="{Binding FontSize}" />
+
+                    <TextBlock Margin="0,24,0,0"
+                               Text="Output Directory" />
+
+                    <Button Margin="0,12,0,0"
+                            Content="Browse"
+                            Command="{Binding BrowseOutputDirectoryCommand}" />
+
+                    <TextBlock Margin="0,12,0,0"
+                               Text="{Binding OutputDirectoryPath}" />
+
+                    <Button Margin="0,24,0,0"
+                            Content="Generate"
+                            Command="{Binding GenerateCommand}" />
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+
+        <TabControl Grid.Column="1"
+                    Margin="24,0,0,0">
+            <TabItem Header="Preview">
+                <Image Source="{Binding PreviewImage}" />
+            </TabItem>
+
+            <TabItem Header="Character Set">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding CharacterSetItems}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Character"
+                                            Binding="{Binding Character}" />
+
+                        <DataGridTextColumn Header="Unicode"
+                                            Binding="{Binding Unicode}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Atlas">
+                <Image Source="{Binding AtlasImage}" />
+            </TabItem>
+
+            <TabItem Header="Log">
+                <TextBlock Text="{Binding Log}" />
+            </TabItem>
+        </TabControl>
     </Grid>
 </contracts:View>

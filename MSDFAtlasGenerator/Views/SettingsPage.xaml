@@ -11,44 +11,43 @@
                 d:DesignWidth="800"
                 d:DataContext="{d:DesignInstance viewmodels:SettingsViewModel}"
                 Title="SettingsPage">
-    <Grid>
-        <StackPanel Margin="42">
-            <TextBlock FontSize="20"
-                       FontWeight="Medium"
-                       Text="Personalization" />
+    
+    <StackPanel Margin="42">
+        <TextBlock FontSize="20"
+                   FontWeight="Medium"
+                   Text="Personalization" />
 
-            <TextBlock Margin="0,12,0,0"
-                       Text="Theme" />
+        <TextBlock Margin="0,12,0,0"
+                   Text="Theme" />
 
-            <RadioButton Margin="0,12,0,0"
-                         Content="Light"
-                         GroupName="themeSelect"
-                         IsChecked="{Binding IsLightThemeRadioButtonChecked}">
-                <behaviors:Interaction.Triggers>
-                    <behaviors:EventTrigger EventName="Checked">
-                        <behaviors:InvokeCommandAction Command="{Binding LightThemeRadioButtonCheckedCommand}" />
-                    </behaviors:EventTrigger>
-                </behaviors:Interaction.Triggers>
-            </RadioButton>
+        <RadioButton Margin="0,12,0,0"
+                     Content="Light"
+                     GroupName="themeSelect"
+                     IsChecked="{Binding IsLightThemeRadioButtonChecked}">
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="Checked">
+                    <behaviors:InvokeCommandAction Command="{Binding LightThemeRadioButtonCheckedCommand}" />
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+        </RadioButton>
 
-            <RadioButton Margin="0,8,0,0"
-                         Content="Dark"
-                         GroupName="themeSelect"
-                         IsChecked="{Binding IsDarkThemeRadioButtonChecked}">
-                <behaviors:Interaction.Triggers>
-                    <behaviors:EventTrigger EventName="Checked">
-                        <behaviors:InvokeCommandAction Command="{Binding DarkThemeRadioButtonCheckedCommand}" />
-                    </behaviors:EventTrigger>
-                </behaviors:Interaction.Triggers>
-            </RadioButton>
+        <RadioButton Margin="0,8,0,0"
+                     Content="Dark"
+                     GroupName="themeSelect"
+                     IsChecked="{Binding IsDarkThemeRadioButtonChecked}">
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="Checked">
+                    <behaviors:InvokeCommandAction Command="{Binding DarkThemeRadioButtonCheckedCommand}" />
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+        </RadioButton>
 
-            <TextBlock Margin="0,24,0,0"
-                       FontSize="20"
-                       FontWeight="Medium"
-                       Text="About MSDF Atlas Generator" />
+        <TextBlock Margin="0,24,0,0"
+                   FontSize="20"
+                   FontWeight="Medium"
+                   Text="About MSDF Atlas Generator" />
 
-            <TextBlock Margin="0,12,0,0"
-                       Text="{Binding Version}" />
-        </StackPanel>
-    </Grid>
+        <TextBlock Margin="0,12,0,0"
+                   Text="{Binding Version}" />
+    </StackPanel>
 </contracts:View>

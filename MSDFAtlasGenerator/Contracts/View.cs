@@ -8,8 +8,6 @@ public abstract class View : Page
 {
     protected View()
     {
-        Margin = new(0, 0, 4, 4);
-
         // Loaded
         {
             EventTrigger eventTrigger = new(nameof(Loaded));
