@@ -69,6 +69,26 @@
                                                  SelectedItem="{Binding AtlasImageFormat, Mode=TwoWay}" />
                     </StackPanel>
                 </TabItem>
+
+                <TabItem Header="Output Setting">
+                    <StackPanel Orientation="Vertical"
+                                Margin="0,10,0,10">
+                        <controls:CheckBoxEditor Title="Output JSON"
+                                                 IsChecked="{Binding IsOutputJson, Mode=TwoWay}" />
+
+                        <controls:CheckBoxEditor Margin="0,24,0,0"
+                                                 Title="Output CSV"
+                                                 IsChecked="{Binding IsOutputCsv, Mode=TwoWay}" />
+
+                        <controls:CheckBoxEditor Margin="0,24,0,0"
+                                                 Title="Output Artery Font"
+                                                 IsChecked="{Binding IsOutputArFont, Mode=TwoWay}" />
+
+                        <controls:CheckBoxEditor Margin="0,24,0,0"
+                                                 Title="Output Shadron script"
+                                                 IsChecked="{Binding IsOutputShadronPreview, Mode=TwoWay}" />
+                    </StackPanel>
+                </TabItem>
             </TabControl>
 
         </DockPanel>

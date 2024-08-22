@@ -28,26 +28,23 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     private AtlasImageFormat atlasImageFormat = AtlasImageFormat.Png;
 
     [ObservableProperty]
-    private string? outputDirectoryPath;
+    private bool isOutputJson = true;
 
-    [RelayCommand]
-    private void BrowseOutputDirectory()
-    {
-        SaveFileDialog saveFileDialog = new()
-        {
-            Filter = "PNG Files (*.png)|*.png",
-            DefaultExt = ".png"
-        };
+    [ObservableProperty]
+    private bool isOutputCsv;
 
-        if (saveFileDialog.ShowDialog() == true)
-        {
-            OutputDirectoryPath = saveFileDialog.FileName;
-        }
-    }
+    [ObservableProperty]
+    private bool isOutputArFont;
+
+    [ObservableProperty]
+    private bool isOutputShadronPreview;
 
     [RelayCommand]
     private void Generate()
     {
+        OpenFolderDialog openFolderDialog = new();
+        openFolderDialog.ShowDialog();
+
         Console.WriteLine(IsAllGlyphs);
     }
 }
