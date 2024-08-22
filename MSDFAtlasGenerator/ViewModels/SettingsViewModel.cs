@@ -67,15 +67,9 @@ public partial class SettingsViewModel(SettingsPage view) : ViewModel<SettingsPa
 
     private void UpdateThemeRadioButton()
     {
-        if (ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Light)
-        {
-            IsLightThemeRadioButtonChecked = true;
-            IsDarkThemeRadioButtonChecked = false;
-        }
-        else
-        {
-            IsLightThemeRadioButtonChecked = false;
-            IsDarkThemeRadioButtonChecked = true;
-        }
+        ApplicationTheme applicationTheme = ApplicationThemeManager.GetAppTheme();
+
+        IsLightThemeRadioButtonChecked = applicationTheme == ApplicationTheme.Light;
+        IsDarkThemeRadioButtonChecked = applicationTheme == ApplicationTheme.Dark;
     }
 }
