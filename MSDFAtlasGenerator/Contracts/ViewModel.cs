@@ -3,9 +3,20 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace MSDFAtlasGenerator.Contracts;
 
-public abstract partial class ViewModel<TView>(TView view) : ObservableRecipient where TView : View
+public abstract partial class ViewModel<TView> : ObservableRecipient where TView : View
 {
-    public TView View { get; } = view;
+    protected ViewModel(TView view)
+    {
+        View = view;
+
+        Initialize();
+    }
+
+    public TView View { get; }
+
+    protected virtual void Initialize()
+    {
+    }
 
     [RelayCommand]
     protected virtual void ViewLoaded()

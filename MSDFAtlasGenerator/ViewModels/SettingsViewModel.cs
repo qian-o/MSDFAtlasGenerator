@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using MSDFAtlasGenerator.Contracts;
 using MSDFAtlasGenerator.Views;
 using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
 
 namespace MSDFAtlasGenerator.ViewModels;
 
@@ -18,10 +19,54 @@ public partial class SettingsViewModel(SettingsPage view) : ViewModel<SettingsPa
     [ObservableProperty]
     private bool isDarkThemeRadioButtonChecked;
 
-    protected override void ViewLoaded()
+    [ObservableProperty]
+    private WindowBackdropType[] systemBackdropTypes = Enum.GetValues<WindowBackdropType>();
+
+    [ObservableProperty]
+    private WindowBackdropType selectedSystemBackdropType = WindowBackdropType.Mica;
+
+    protected override void Initialize()
     {
         Version = $"MSDF Atlas Generator - {GetAssemblyVersion()}";
 
+        UpdateThemeRadioButton();
+
+        ApplicationThemeManager.Changed += ApplicationThemeManager_Changed;
+    }
+
+    private void ApplicationThemeManager_Changed(ApplicationTheme currentApplicationTheme, Color systemAccent)
+    {
+        UpdateThemeRadioButton();
+    }
+
+    partial void OnIsLightThemeRadioButtonCheckedChanged(bool value)
+    {
+        if (value)
+        {
+            ApplicationThemeManager.Apply(ApplicationTheme.Light, SelectedSystemBackdropType);
+        }
+    }
+
+    partial void OnIsDarkThemeRadioButtonCheckedChanged(bool value)
+    {
+        if (value)
+        {
+            ApplicationThemeManager.Apply(ApplicationTheme.Dark, SelectedSystemBackdropType);
+        }
+    }
+
+    partial void OnSelectedSystemBackdropTypeChanged(WindowBackdropType value)
+    {
+        ApplicationThemeManager.Apply(ApplicationThemeManager.GetAppTheme(), value);
+    }
+
+    private static string GetAssemblyVersion()
+    {
+        return Assembly.GetExecutingAssembly().GetName().Version?.ToString(fieldCount: 3) ?? string.Empty;
+    }
+
+    private void UpdateThemeRadioButton()
+    {
         if (ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Light)
         {
             IsLightThemeRadioButtonChecked = true;
@@ -32,22 +77,5 @@ public partial class SettingsViewModel(SettingsPage view) : ViewModel<SettingsPa
             IsLightThemeRadioButtonChecked = false;
             IsDarkThemeRadioButtonChecked = true;
         }
-    }
-
-    [RelayCommand]
-    private static void OnLightThemeRadioButtonChecked()
-    {
-        ApplicationThemeManager.Apply(ApplicationTheme.Light);
-    }
-
-    [RelayCommand]
-    private static void OnDarkThemeRadioButtonChecked()
-    {
-        ApplicationThemeManager.Apply(ApplicationTheme.Dark);
-    }
-
-    private static string GetAssemblyVersion()
-    {
-        return Assembly.GetExecutingAssembly().GetName().Version?.ToString(fieldCount: 3) ?? string.Empty;
     }
 }
