@@ -4,37 +4,34 @@ using IEnumerable = System.Collections.IEnumerable;
 
 namespace MSDFAtlasGenerator.Controls;
 
-/// <summary>
-/// ComboBoxEdit.xaml 的交互逻辑
-/// </summary>
-public partial class ComboBoxEdit : Edit
+public partial class ComboBoxEditor : Editor
 {
     public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(nameof(ItemsSource),
                                                                                                 typeof(IEnumerable),
-                                                                                                typeof(ComboBoxEdit),
-                                                                                                new PropertyMetadata(null, (a, _) => ((ComboBoxEdit)a).UpdateActualItemsSource()));
+                                                                                                typeof(ComboBoxEditor),
+                                                                                                new PropertyMetadata(null, (a, _) => ((ComboBoxEditor)a).UpdateActualItemsSource()));
 
     public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(nameof(SelectedItem),
                                                                                                  typeof(object),
-                                                                                                 typeof(ComboBoxEdit),
+                                                                                                 typeof(ComboBoxEditor),
                                                                                                  new PropertyMetadata(null));
 
     public static readonly DependencyProperty IsEnumProperty = DependencyProperty.Register(nameof(IsEnum),
                                                                                            typeof(bool),
-                                                                                           typeof(ComboBoxEdit),
-                                                                                           new PropertyMetadata(false, (a, _) => ((ComboBoxEdit)a).UpdateActualItemsSource()));
+                                                                                           typeof(ComboBoxEditor),
+                                                                                           new PropertyMetadata(false, (a, _) => ((ComboBoxEditor)a).UpdateActualItemsSource()));
 
     public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(nameof(EnumType),
                                                                                              typeof(Type),
-                                                                                             typeof(ComboBoxEdit),
-                                                                                             new PropertyMetadata(null, (a, _) => ((ComboBoxEdit)a).UpdateActualItemsSource()));
+                                                                                             typeof(ComboBoxEditor),
+                                                                                             new PropertyMetadata(null, (a, _) => ((ComboBoxEditor)a).UpdateActualItemsSource()));
 
     public static readonly DependencyProperty ActualItemsSourceProperty = DependencyProperty.Register(nameof(ActualItemsSource),
                                                                                                       typeof(IEnumerable),
-                                                                                                      typeof(ComboBoxEdit),
+                                                                                                      typeof(ComboBoxEditor),
                                                                                                       new PropertyMetadata(null));
 
-    public ComboBoxEdit()
+    public ComboBoxEditor()
     {
         InitializeComponent();
     }

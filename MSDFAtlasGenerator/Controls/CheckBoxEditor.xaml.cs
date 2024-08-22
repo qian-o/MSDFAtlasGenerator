@@ -3,17 +3,14 @@ using MSDFAtlasGenerator.Contracts;
 
 namespace MSDFAtlasGenerator.Controls;
 
-/// <summary>
-/// CheckBoxEdit.xaml 的交互逻辑
-/// </summary>
-public partial class CheckBoxEdit : Edit
+public partial class CheckBoxEditor : Editor
 {
     public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(nameof(IsChecked),
                                                                                               typeof(bool),
-                                                                                              typeof(CheckBoxEdit),
+                                                                                              typeof(CheckBoxEditor),
                                                                                               new PropertyMetadata(false));
 
-    public CheckBoxEdit()
+    public CheckBoxEditor()
     {
         InitializeComponent();
     }

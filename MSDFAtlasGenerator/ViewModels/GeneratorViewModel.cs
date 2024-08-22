@@ -13,6 +13,9 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     private string? fontFilePath;
 
     [ObservableProperty]
+    private double fontSize = 64;
+
+    [ObservableProperty]
     private string? charsetFilePath;
 
     [ObservableProperty]
@@ -22,7 +25,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     private AtlasType atlasType = AtlasType.MSDF;
 
     [ObservableProperty]
-    private double fontSize = 64;
+    private AtlasImageFormat atlasImageFormat = AtlasImageFormat.Png;
 
     [ObservableProperty]
     private string? outputDirectoryPath;

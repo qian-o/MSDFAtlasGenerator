@@ -4,27 +4,24 @@ using MSDFAtlasGenerator.Contracts;
 
 namespace MSDFAtlasGenerator.Controls;
 
-/// <summary>
-/// OpenFileEdit.xaml 的交互逻辑
-/// </summary>
-public partial class OpenFileEdit : Edit
+public partial class OpenFileEditor : Editor
 {
     public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(nameof(Filter),
                                                                                            typeof(string),
-                                                                                           typeof(OpenFileEdit),
+                                                                                           typeof(OpenFileEditor),
                                                                                            new PropertyMetadata(string.Empty));
 
     public static readonly DependencyProperty IsMultiselectProperty = DependencyProperty.Register(nameof(IsMultiselect),
                                                                                                  typeof(bool),
-                                                                                                 typeof(OpenFileEdit),
+                                                                                                 typeof(OpenFileEditor),
                                                                                                  new PropertyMetadata(false));
 
     public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register(nameof(FilePath),
                                                                                              typeof(string),
-                                                                                             typeof(OpenFileEdit),
+                                                                                             typeof(OpenFileEditor),
                                                                                              new PropertyMetadata(string.Empty));
 
-    public OpenFileEdit()
+    public OpenFileEditor()
     {
         InitializeComponent();
     }

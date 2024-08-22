@@ -30,29 +30,43 @@
                 <TabItem Header="Easy Setting">
                     <StackPanel Orientation="Vertical"
                                 Margin="0,10,0,10">
-                        <controls:OpenFileEdit Title="Font"
-                                               Filter="Font Files (*.ttf, *.otf)|*.ttf;*.otf|All Files (*.*)|*.*"
-                                               FilePath="{Binding FontFilePath}" />
+                        <controls:OpenFileEditor Title="Font"
+                                                 Filter="Font Files (*.ttf, *.otf)|*.ttf;*.otf|All Files (*.*)|*.*"
+                                                 FilePath="{Binding FontFilePath}" />
 
-                        <controls:OpenFileEdit Margin="0,24,0,0"
-                                               Title="Charset"
-                                               Filter="Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
-                                               FilePath="{Binding CharsetFilePath}" />
+                        <controls:DragNumberEditor Margin="0,24,0,0"
+                                                   Title="Font Em Size"
+                                                   MinValue="1"
+                                                   MaxValue="256"
+                                                   Value="{Binding FontSize, Mode=TwoWay}"
+                                                   DecimalPlaces="2"
+                                                   Step="0.5" />
 
-                        <controls:OpenFileEdit Margin="0,24,0,0"
-                                               Title="Glyphset"
-                                               Filter="Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
-                                               FilePath="{Binding CharsetFilePath}" />
+                        <controls:OpenFileEditor Margin="0,24,0,0"
+                                                 Title="Charset"
+                                                 Filter="Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+                                                 FilePath="{Binding CharsetFilePath}" />
 
-                        <controls:CheckBoxEdit Margin="0,24,0,0"
-                                               Title="All Glyphs"
-                                               IsChecked="{Binding IsAllGlyphs, Mode=TwoWay}" />
+                        <controls:OpenFileEditor Margin="0,24,0,0"
+                                                 Title="Glyphset"
+                                                 Filter="Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+                                                 FilePath="{Binding CharsetFilePath}" />
 
-                        <controls:ComboBoxEdit Margin="0,24,0,0"
-                                               Title="Atlas Type"
-                                               IsEnum="True"
-                                               EnumType="enums:AtlasType"
-                                               SelectedItem="{Binding AtlasType, Mode=TwoWay}" />
+                        <controls:CheckBoxEditor Margin="0,24,0,0"
+                                                 Title="All Glyphs"
+                                                 IsChecked="{Binding IsAllGlyphs, Mode=TwoWay}" />
+
+                        <controls:ComboBoxEditor Margin="0,24,0,0"
+                                                 Title="Atlas Type"
+                                                 IsEnum="True"
+                                                 EnumType="enums:AtlasType"
+                                                 SelectedItem="{Binding AtlasType, Mode=TwoWay}" />
+
+                        <controls:ComboBoxEditor Margin="0,24,0,0"
+                                                 Title="Atlas Image Format"
+                                                 IsEnum="True"
+                                                 EnumType="enums:AtlasImageFormat"
+                                                 SelectedItem="{Binding AtlasImageFormat, Mode=TwoWay}" />
                     </StackPanel>
                 </TabItem>
             </TabControl>

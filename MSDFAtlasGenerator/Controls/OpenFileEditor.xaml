@@ -1,4 +1,4 @@
-﻿<contracts:Edit x:Class="MSDFAtlasGenerator.Controls.OpenFileEdit"
+﻿<contracts:Editor x:Class="MSDFAtlasGenerator.Controls.OpenFileEditor"
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -21,4 +21,4 @@
                    Text="{Binding ElementName=Main, Path=FilePath}" 
                    Visibility="{Binding ElementName=Main, Path=FilePath, Converter={StaticResource IsStringEmptyToVisibilityConverter}}"/>
     </StackPanel>
-</contracts:Edit>
+</contracts:Editor>
