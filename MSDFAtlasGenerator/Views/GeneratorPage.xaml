@@ -5,12 +5,14 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:contracts="clr-namespace:MSDFAtlasGenerator.Contracts"
                 xmlns:controls="clr-namespace:MSDFAtlasGenerator.Controls"
+                xmlns:enums="clr-namespace:MSDFAtlasGenerator.Enums"
                 xmlns:viewmodels="clr-namespace:MSDFAtlasGenerator.ViewModels"
                 mc:Ignorable="d"
                 d:DesignHeight="450"
                 d:DesignWidth="800"
                 d:DataContext="{d:DesignInstance viewmodels:GeneratorViewModel}"
                 Title="GeneratorPage">
+
     <Grid Margin="42">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
@@ -25,7 +27,7 @@
                     DockPanel.Dock="Bottom" />
 
             <TabControl>
-                <TabItem Header="Input">
+                <TabItem Header="Easy Setting">
                     <StackPanel Orientation="Vertical"
                                 Margin="0,10,0,10">
                         <controls:OpenFileEdit Title="Font"
@@ -45,9 +47,16 @@
                         <controls:CheckBoxEdit Margin="0,24,0,0"
                                                Title="All Glyphs"
                                                IsChecked="{Binding IsAllGlyphs, Mode=TwoWay}" />
+
+                        <controls:ComboBoxEdit Margin="0,24,0,0"
+                                               Title="Atlas Type"
+                                               IsEnum="True"
+                                               EnumType="enums:AtlasType"
+                                               SelectedItem="{Binding AtlasType, Mode=TwoWay}" />
                     </StackPanel>
                 </TabItem>
             </TabControl>
+
         </DockPanel>
     </Grid>
 </contracts:View>
