@@ -3,11 +3,14 @@ using System.IO;
 using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MSDFAtlasGenerator.Enums;
+using MSDFAtlasGenerator.Helpers;
 
 namespace MSDFAtlasGenerator.Tools;
 
-public partial class GeneratorConfig : ObservableObject
+public partial class Generator : ObservableObject
 {
+    private readonly string ToolPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "msdf-atlas-gen.exe");
+
     [ObservableProperty]
     private string? fontFilePath;
 
@@ -38,12 +41,48 @@ public partial class GeneratorConfig : ObservableObject
     [ObservableProperty]
     private bool isOutputShadronPreview;
 
-    public bool Validate()
+    public bool Generate(string folder)
+    {
+        if (!Validate())
+        {
+            return false;
+        }
+
+        string cmd = GetArguments(folder);
+
+        ProcessHelpers.RunNoWindow(ToolPath, cmd);
+
+        return true;
+    }
+
+    public bool GenerateTemp(out byte[] bytes)
+    {
+        bytes = [];
+
+        if (!Validate())
+        {
+            return false;
+        }
+
+        string output = Path.GetTempFileName();
+
+        string cmd = GetTempArguments(output);
+
+        ProcessHelpers.RunNoWindow(ToolPath, cmd);
+
+        bytes = File.ReadAllBytes(output);
+
+        File.Delete(output);
+
+        return true;
+    }
+
+    private bool Validate()
     {
         return !string.IsNullOrWhiteSpace(FontFilePath);
     }
 
-    public string GenerateCommandLine(string folder)
+    private string GetArguments(string folder)
     {
         string outputName = Path.GetFileNameWithoutExtension(FontFilePath)!;
 
@@ -87,6 +126,22 @@ public partial class GeneratorConfig : ObservableObject
         {
             stringBuilder.Append(cultureInfo, $" -shadron {Path.Combine(folder, $"{outputName}.shadron")}");
         }
+
+        return stringBuilder.ToString();
+    }
+
+    private string GetTempArguments(string output)
+    {
+        CultureInfo cultureInfo = CultureInfo.InvariantCulture;
+
+        StringBuilder stringBuilder = new();
+
+        stringBuilder.Append(cultureInfo, $" -font {FontFilePath}");
+        stringBuilder.Append(cultureInfo, $" -size {FontSize}");
+        stringBuilder.Append(cultureInfo, $" -chars 65");
+        stringBuilder.Append(cultureInfo, $" -type {AtlasType.ToString().ToLowerInvariant()}");
+        stringBuilder.Append(cultureInfo, $" -format {AtlasImageFormat.Bin.ToString().ToLowerInvariant()}");
+        stringBuilder.Append(cultureInfo, $" -imageout {output}");
 
         return stringBuilder.ToString();
     }
