@@ -8,8 +8,6 @@
                 xmlns:enums="clr-namespace:MSDFAtlasGenerator.Enums"
                 xmlns:viewmodels="clr-namespace:MSDFAtlasGenerator.ViewModels"
                 mc:Ignorable="d"
-                d:DesignHeight="450"
-                d:DesignWidth="800"
                 d:DataContext="{d:DesignInstance viewmodels:GeneratorViewModel}"
                 Title="GeneratorPage">
 
@@ -35,13 +33,13 @@
                                                  Filter="Font Files (*.ttf, *.otf)|*.ttf;*.otf|All Files (*.*)|*.*"
                                                  FilePath="{Binding FontFilePath, Mode=TwoWay}" />
 
-                        <controls:DragNumberEditor Margin="0,24,0,0"
-                                                   Title="Font Em Size"
-                                                   MinValue="1"
-                                                   MaxValue="256"
-                                                   Value="{Binding FontSize, Mode=TwoWay}"
-                                                   DecimalPlaces="2"
-                                                   Step="0.5" />
+                        <controls:NumberEditor Margin="0,24,0,0"
+                                               Title="Font Em Size"
+                                               MinValue="1"
+                                               MaxValue="256"
+                                               Value="{Binding FontSize, Mode=TwoWay}"
+                                               DecimalPlaces="2"
+                                               Step="0.5" />
 
                         <controls:OpenFileEditor Margin="0,24,0,0"
                                                  Title="Charset"

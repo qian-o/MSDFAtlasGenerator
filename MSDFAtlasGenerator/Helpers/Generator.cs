@@ -48,9 +48,7 @@ public partial class Generator : ObservableObject
             return false;
         }
 
-        string cmd = GetArguments(folder);
-
-        ProcessHelpers.RunNoWindow(ToolPath, cmd);
+        ProcessHelpers.RunNoWindow(ToolPath, GetArguments(folder));
 
         return true;
     }
@@ -64,15 +62,15 @@ public partial class Generator : ObservableObject
             return false;
         }
 
-        string output = Path.GetTempFileName();
+        string outputBin = Path.GetTempFileName();
+        string outputJson = Path.GetTempFileName();
 
-        string cmd = GetTempArguments(output);
+        ProcessHelpers.RunNoWindow(ToolPath, GetTempArguments(outputBin, outputJson));
 
-        ProcessHelpers.RunNoWindow(ToolPath, cmd);
+        bytes = File.ReadAllBytes(outputBin);
 
-        bytes = File.ReadAllBytes(output);
-
-        File.Delete(output);
+        File.Delete(outputBin);
+        File.Delete(outputJson);
 
         return true;
     }
@@ -130,7 +128,7 @@ public partial class Generator : ObservableObject
         return stringBuilder.ToString();
     }
 
-    private string GetTempArguments(string output)
+    private string GetTempArguments(string outputBin, string outputJson)
     {
         CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
@@ -141,7 +139,8 @@ public partial class Generator : ObservableObject
         stringBuilder.Append(cultureInfo, $" -chars 65");
         stringBuilder.Append(cultureInfo, $" -type {AtlasType.ToString().ToLowerInvariant()}");
         stringBuilder.Append(cultureInfo, $" -format {AtlasImageFormat.Bin.ToString().ToLowerInvariant()}");
-        stringBuilder.Append(cultureInfo, $" -imageout {output}");
+        stringBuilder.Append(cultureInfo, $" -imageout {outputBin}");
+        stringBuilder.Append(cultureInfo, $" -json {outputJson}");
 
         return stringBuilder.ToString();
     }

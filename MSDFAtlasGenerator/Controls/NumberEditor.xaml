@@ -1,4 +1,4 @@
-﻿<contracts:Editor x:Class="MSDFAtlasGenerator.Controls.DragNumberEditor"
+﻿<contracts:Editor x:Class="MSDFAtlasGenerator.Controls.NumberEditor"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,6 +7,7 @@
                   xmlns:contracts="clr-namespace:MSDFAtlasGenerator.Contracts"
                   mc:Ignorable="d"
                   x:Name="Main">
+
     <DockPanel>
         <TextBlock VerticalAlignment="Center"
                    Text="{Binding ElementName=Main, Path=Title}" />
@@ -15,10 +16,11 @@
                       HorizontalAlignment="Right"
                       Minimum="{Binding ElementName=Main, Path=MinValue}"
                       Maximum="{Binding ElementName=Main, Path=MaxValue}"
-                      Value="{Binding ElementName=Main, Path=Value}"
+                      Value="{Binding ElementName=Main, Path=Value, UpdateSourceTrigger=PropertyChanged}"
                       MaxDecimalPlaces="{Binding ElementName=Main, Path=DecimalPlaces}"
                       SmallChange="{Binding ElementName=Main, Path=Step}"
                       ClearButtonEnabled="False"
-                      SpinButtonPlacementMode="Hidden" />
+                      SpinButtonPlacementMode="Hidden">
+        </ui:NumberBox>
     </DockPanel>
 </contracts:Editor>
