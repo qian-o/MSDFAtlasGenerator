@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -72,7 +73,7 @@ public partial class Generator : ObservableObject
         ProcessHelpers.Run(ToolPath, GetPreviewArguments(outputBin, outputJson));
 
         jsonAtlasMetrics = JsonConvert.DeserializeObject<JsonAtlasMetrics>(File.ReadAllText(outputJson))!;
-        rgba = File.ReadAllBytes(outputBin);
+        rgba = BinToRgba(outputBin);
 
         File.Delete(outputBin);
         File.Delete(outputJson);
@@ -171,5 +172,74 @@ public partial class Generator : ObservableObject
         stringBuilder.Append(cultureInfo, $@" -json ""{outputJson}""");
 
         return stringBuilder.ToString();
+    }
+
+    private byte[] BinToRgba(string outputBin)
+    {
+        byte[] bin = File.ReadAllBytes(outputBin);
+
+        byte[] rgba = new byte[bin.Length / GetChannelCount() * 4];
+
+        switch (AtlasType)
+        {
+            case AtlasType.HardMask:
+            case AtlasType.SoftMask:
+            case AtlasType.SDF:
+            case AtlasType.PSDF:
+                {
+                    for (int i = 0; i < rgba.Length; i += 4)
+                    {
+                        int index = i / 4;
+
+                        rgba[i + 0] = bin[index];
+                        rgba[i + 1] = bin[index];
+                        rgba[i + 2] = bin[index];
+                        rgba[i + 3] = 255;
+                    }
+                }
+                break;
+            case AtlasType.MSDF:
+                {
+                    for (int i = 0; i < rgba.Length; i += 4)
+                    {
+                        int index = i / 4 * 3;
+
+                        rgba[i + 0] = bin[index + 0];
+                        rgba[i + 1] = bin[index + 1];
+                        rgba[i + 2] = bin[index + 2];
+                        rgba[i + 3] = 255;
+                    }
+                }
+                break;
+            case AtlasType.MTSDF:
+                {
+                    for (int i = 0; i < rgba.Length; i += 4)
+                    {
+                        rgba[i + 0] = bin[i + 0];
+                        rgba[i + 1] = bin[i + 1];
+                        rgba[i + 2] = bin[i + 2];
+                        rgba[i + 3] = bin[i + 3];
+                    }
+                }
+                break;
+            default:
+                throw new InvalidEnumArgumentException();
+        }
+
+        return rgba;
+    }
+
+    private int GetChannelCount()
+    {
+        return AtlasType switch
+        {
+            AtlasType.HardMask => 1,
+            AtlasType.SoftMask => 1,
+            AtlasType.SDF => 1,
+            AtlasType.PSDF => 1,
+            AtlasType.MSDF => 3,
+            AtlasType.MTSDF => 4,
+            _ => 0,
+        };
     }
 }
