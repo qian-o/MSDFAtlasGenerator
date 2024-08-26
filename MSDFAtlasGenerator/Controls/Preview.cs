@@ -35,7 +35,22 @@ public class Preview : Control
             Stretch = Stretch.None
         };
 
+        if (ImageData.Width > ActualWidth || ImageData.Height > ActualHeight)
+        {
+            imageBrush.Stretch = Stretch.Uniform;
+        }
+
+        if (ImageData.FlipY)
+        {
+            drawingContext.PushTransform(new ScaleTransform(1, -1, ActualWidth / 2.0, ActualHeight / 2.0));
+        }
+
         drawingContext.DrawRectangle(imageBrush, null, new Rect(0, 0, ActualWidth, ActualHeight));
+
+        if (ImageData.FlipY)
+        {
+            drawingContext.Pop();
+        }
     }
 
     private void UpdatePreview()
@@ -51,7 +66,7 @@ public class Preview : Control
                 previewImage = new WriteableBitmap(ImageData.Width, ImageData.Height, 96, 96, PixelFormats.Bgra32, null);
             }
 
-            previewImage.WritePixels(new Int32Rect(0, 0, ImageData.Width, ImageData.Height), ImageData.Data, ImageData.Width * 4, 0);
+            previewImage.WritePixels(new Int32Rect(0, 0, ImageData.Width, ImageData.Height), ImageData.Bgra, ImageData.Width * 4, 0);
 
             InvalidateVisual();
         }

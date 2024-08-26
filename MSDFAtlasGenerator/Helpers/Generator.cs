@@ -57,10 +57,10 @@ public partial class Generator : ObservableObject
         return true;
     }
 
-    public bool GeneratePreview(out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? rgba)
+    public bool GeneratePreview(out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? bgra)
     {
         jsonAtlasMetrics = null;
-        rgba = null;
+        bgra = null;
 
         if (!Validate())
         {
@@ -73,7 +73,7 @@ public partial class Generator : ObservableObject
         ProcessHelpers.Run(ToolPath, GetPreviewArguments(outputBin, outputJson));
 
         jsonAtlasMetrics = JsonConvert.DeserializeObject<JsonAtlasMetrics>(File.ReadAllText(outputJson))!;
-        rgba = BinToRgba(outputBin);
+        bgra = BinToBgra(outputBin);
 
         File.Delete(outputBin);
         File.Delete(outputJson);
@@ -173,11 +173,11 @@ public partial class Generator : ObservableObject
         return stringBuilder.ToString();
     }
 
-    private byte[] BinToRgba(string outputBin)
+    private byte[] BinToBgra(string outputBin)
     {
         byte[] bin = File.ReadAllBytes(outputBin);
 
-        byte[] rgba = new byte[bin.Length / GetChannelCount() * 4];
+        byte[] bgra = new byte[bin.Length / GetChannelCount() * 4];
 
         switch (AtlasType)
         {
@@ -186,38 +186,38 @@ public partial class Generator : ObservableObject
             case AtlasType.SDF:
             case AtlasType.PSDF:
                 {
-                    for (int i = 0; i < rgba.Length; i += 4)
+                    for (int i = 0; i < bgra.Length; i += 4)
                     {
                         int index = i / 4;
 
-                        rgba[i + 0] = bin[index];
-                        rgba[i + 1] = bin[index];
-                        rgba[i + 2] = bin[index];
-                        rgba[i + 3] = 255;
+                        bgra[i + 0] = bin[index];
+                        bgra[i + 1] = bin[index];
+                        bgra[i + 2] = bin[index];
+                        bgra[i + 3] = 255;
                     }
                 }
                 break;
             case AtlasType.MSDF:
                 {
-                    for (int i = 0; i < rgba.Length; i += 4)
+                    for (int i = 0; i < bgra.Length; i += 4)
                     {
                         int index = i / 4 * 3;
 
-                        rgba[i + 0] = bin[index + 0];
-                        rgba[i + 1] = bin[index + 1];
-                        rgba[i + 2] = bin[index + 2];
-                        rgba[i + 3] = 255;
+                        bgra[i + 0] = bin[index + 0];
+                        bgra[i + 1] = bin[index + 1];
+                        bgra[i + 2] = bin[index + 2];
+                        bgra[i + 3] = 255;
                     }
                 }
                 break;
             case AtlasType.MTSDF:
                 {
-                    for (int i = 0; i < rgba.Length; i += 4)
+                    for (int i = 0; i < bgra.Length; i += 4)
                     {
-                        rgba[i + 0] = bin[i + 0];
-                        rgba[i + 1] = bin[i + 1];
-                        rgba[i + 2] = bin[i + 2];
-                        rgba[i + 3] = bin[i + 3];
+                        bgra[i + 0] = bin[i + 2];
+                        bgra[i + 1] = bin[i + 1];
+                        bgra[i + 2] = bin[i + 0];
+                        bgra[i + 3] = bin[i + 3];
                     }
                 }
                 break;
@@ -225,7 +225,7 @@ public partial class Generator : ObservableObject
                 throw new InvalidEnumArgumentException();
         }
 
-        return rgba;
+        return bgra;
     }
 
     private int GetChannelCount()

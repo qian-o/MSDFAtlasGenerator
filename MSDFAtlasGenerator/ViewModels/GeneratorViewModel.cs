@@ -54,7 +54,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
 
         if (Generator.GeneratePreview(out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? rgba))
         {
-            PreviewData = new ImageData(jsonAtlasMetrics!.Atlas.Width, jsonAtlasMetrics.Atlas.Height, rgba);
+            PreviewData = new ImageData(jsonAtlasMetrics!.Atlas.Width, jsonAtlasMetrics.Atlas.Height, rgba, jsonAtlasMetrics!.Atlas.YOrigin == YDirection.Bottom);
         }
     }
 

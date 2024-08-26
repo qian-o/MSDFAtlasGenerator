@@ -4,11 +4,12 @@ namespace MSDFAtlasGenerator.Models;
 
 public partial class ImageData : ObservableObject
 {
-    public ImageData(int width, int height, byte[]? data)
+    public ImageData(int width, int height, byte[]? bgra, bool flipY)
     {
         Width = width;
         Height = height;
-        Data = data;
+        Bgra = bgra;
+        FlipY = flipY;
     }
 
     [ObservableProperty]
@@ -18,5 +19,8 @@ public partial class ImageData : ObservableObject
     private int height;
 
     [ObservableProperty]
-    private byte[]? data;
+    private byte[]? bgra;
+
+    [ObservableProperty]
+    private bool flipY;
 }
