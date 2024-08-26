@@ -4,10 +4,10 @@ namespace MSDFAtlasGenerator.Helpers;
 
 public static class ProcessHelpers
 {
-    public static void RunNoWindow(string fileName,
-                                   string? arguments = null,
-                                   Action<string?>? outputReceived = null,
-                                   Action<string?>? errorReceived = null)
+    public static async Task Run(string fileName,
+                                 string? arguments = null,
+                                 Action<string?>? outputReceived = null,
+                                 Action<string?>? errorReceived = null)
     {
         ProcessStartInfo startInfo = new()
         {
@@ -28,6 +28,7 @@ public static class ProcessHelpers
         process.ErrorDataReceived += (sender, e) => errorReceived?.Invoke(e.Data);
 
         process.Start();
-        process.WaitForExit();
+
+        await process.WaitForExitAsync();
     }
 }

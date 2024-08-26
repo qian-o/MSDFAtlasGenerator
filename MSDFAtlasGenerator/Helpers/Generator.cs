@@ -42,19 +42,19 @@ public partial class Generator : ObservableObject
     [ObservableProperty]
     private bool isOutputShadronPreview;
 
-    public bool Generate(string folder)
+    public async Task<bool> Generate(string folder)
     {
         if (!Validate())
         {
             return false;
         }
 
-        ProcessHelpers.RunNoWindow(ToolPath, GetArguments(folder));
+        await ProcessHelpers.Run(ToolPath, GetArguments(folder));
 
         return true;
     }
 
-    public bool GenerateTemp(out byte[] bytes)
+    public bool GeneratePreview(out byte[] bytes)
     {
         bytes = [];
 
@@ -66,7 +66,7 @@ public partial class Generator : ObservableObject
         string outputBin = Path.GetTempFileName();
         string outputJson = Path.GetTempFileName();
 
-        ProcessHelpers.RunNoWindow(ToolPath, GetTempArguments(outputBin, outputJson));
+        ProcessHelpers.Run(ToolPath, GetPreviewArguments(outputBin, outputJson)).GetAwaiter().GetResult();
 
         bytes = File.ReadAllBytes(outputBin);
 
@@ -152,7 +152,7 @@ public partial class Generator : ObservableObject
         return stringBuilder.ToString();
     }
 
-    private string GetTempArguments(string outputBin, string outputJson)
+    private string GetPreviewArguments(string outputBin, string outputJson)
     {
         CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
