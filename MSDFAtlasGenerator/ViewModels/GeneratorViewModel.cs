@@ -14,43 +14,33 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     private string? previewImagePath;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private string? fontFilePath;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private double fontSize = 64;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private string? charsetFilePath;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private bool isAllGlyphs;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private AtlasType atlasType = AtlasType.MSDF;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private AtlasImageFormat atlasImageFormat = AtlasImageFormat.Png;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private bool isOutputJson = true;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private bool isOutputCsv;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private bool isOutputArFont;
 
     [ObservableProperty]
-    [NotifyPropertyChangedRecipients]
     private bool isOutputShadronPreview;
 
     [ObservableProperty]
