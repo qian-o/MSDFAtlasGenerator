@@ -46,11 +46,6 @@
                                                  Filter="Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
                                                  FilePath="{Binding CharsetFilePath, Mode=TwoWay}" />
 
-                        <controls:OpenFileEditor Margin="0,24,0,0"
-                                                 Title="Glyphset"
-                                                 Filter="Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
-                                                 FilePath="{Binding CharsetFilePath, Mode=TwoWay}" />
-
                         <controls:CheckBoxEditor Margin="0,24,0,0"
                                                  Title="All Glyphs"
                                                  IsChecked="{Binding IsAllGlyphs, Mode=TwoWay}" />

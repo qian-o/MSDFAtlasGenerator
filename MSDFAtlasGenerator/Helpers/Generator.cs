@@ -10,6 +10,7 @@ namespace MSDFAtlasGenerator.Tools;
 public partial class Generator : ObservableObject
 {
     private readonly string ToolPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "msdf-atlas-gen.exe");
+    private readonly string CharsetPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "charset.txt");
 
     [ObservableProperty]
     private string? fontFilePath;
@@ -48,7 +49,7 @@ public partial class Generator : ObservableObject
             return false;
         }
 
-        ProcessHelpers.RunNoWindow(ToolPath, GetArguments(folder));
+        ProcessHelpers.RunNoWindow(ToolPath, GetArguments(UpdateCharset(), folder));
 
         return true;
     }
@@ -80,7 +81,31 @@ public partial class Generator : ObservableObject
         return !string.IsNullOrWhiteSpace(FontFilePath);
     }
 
-    private string GetArguments(string folder)
+    private bool UpdateCharset()
+    {
+        if (string.IsNullOrWhiteSpace(CharsetFilePath))
+        {
+            return false;
+        }
+
+        int[] charset = File.ReadAllText(CharsetFilePath, Encoding.UTF8)
+                            .Distinct()
+                            .Select(static item => (int)item)
+                            .ToArray();
+
+        if (charset.Length == 0)
+        {
+            return false;
+        }
+
+        File.Create(CharsetPath).Dispose();
+
+        File.WriteAllText(CharsetPath, string.Join(" ", charset), Encoding.UTF8);
+
+        return true;
+    }
+
+    private string GetArguments(bool useCharsetPath, string folder)
     {
         string outputName = Path.GetFileNameWithoutExtension(FontFilePath)!;
 
@@ -91,12 +116,11 @@ public partial class Generator : ObservableObject
         stringBuilder.Append(cultureInfo, $" -font {FontFilePath}");
         stringBuilder.Append(cultureInfo, $" -size {FontSize}");
 
-        if (!string.IsNullOrWhiteSpace(CharsetFilePath))
+        if (useCharsetPath)
         {
-            stringBuilder.Append(cultureInfo, $" -charset {CharsetFilePath}");
+            stringBuilder.Append(cultureInfo, $" -charset {CharsetPath}");
         }
-
-        if (IsAllGlyphs)
+        else if (IsAllGlyphs)
         {
             stringBuilder.Append(cultureInfo, $" -allglyphs");
         }
