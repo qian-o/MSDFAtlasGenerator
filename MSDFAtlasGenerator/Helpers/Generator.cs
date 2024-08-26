@@ -165,7 +165,6 @@ public partial class Generator : ObservableObject
 
         stringBuilder.Append(cultureInfo, $@" -font ""{FontFilePath}""");
         stringBuilder.Append(cultureInfo, $@" -size {FontSize}");
-        stringBuilder.Append(cultureInfo, $@" -chars 65");
         stringBuilder.Append(cultureInfo, $@" -type {AtlasType.ToString().ToLowerInvariant()}");
         stringBuilder.Append(cultureInfo, $@" -format bin");
         stringBuilder.Append(cultureInfo, $@" -imageout ""{outputBin}""");
@@ -239,7 +238,7 @@ public partial class Generator : ObservableObject
             AtlasType.PSDF => 1,
             AtlasType.MSDF => 3,
             AtlasType.MTSDF => 4,
-            _ => 0,
+            _ => 0
         };
     }
 }
