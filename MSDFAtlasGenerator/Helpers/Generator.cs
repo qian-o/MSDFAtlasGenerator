@@ -4,6 +4,8 @@ using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MSDFAtlasGenerator.Enums;
 using MSDFAtlasGenerator.Helpers;
+using MSDFAtlasGenerator.Models;
+using Newtonsoft.Json;
 
 namespace MSDFAtlasGenerator.Tools;
 
@@ -49,14 +51,15 @@ public partial class Generator : ObservableObject
             return false;
         }
 
-        await ProcessHelpers.Run(ToolPath, GetArguments(folder));
+        await ProcessHelpers.RunAsync(ToolPath, GetArguments(folder));
 
         return true;
     }
 
-    public bool GeneratePreview(out byte[] bytes)
+    public bool GeneratePreview(out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? rgba)
     {
-        bytes = [];
+        jsonAtlasMetrics = null;
+        rgba = null;
 
         if (!Validate())
         {
@@ -66,9 +69,10 @@ public partial class Generator : ObservableObject
         string outputBin = Path.GetTempFileName();
         string outputJson = Path.GetTempFileName();
 
-        ProcessHelpers.Run(ToolPath, GetPreviewArguments(outputBin, outputJson)).GetAwaiter().GetResult();
+        ProcessHelpers.Run(ToolPath, GetPreviewArguments(outputBin, outputJson));
 
-        bytes = File.ReadAllBytes(outputBin);
+        jsonAtlasMetrics = JsonConvert.DeserializeObject<JsonAtlasMetrics>(File.ReadAllText(outputJson))!;
+        rgba = File.ReadAllBytes(outputBin);
 
         File.Delete(outputBin);
         File.Delete(outputJson);
@@ -113,40 +117,40 @@ public partial class Generator : ObservableObject
 
         StringBuilder stringBuilder = new();
 
-        stringBuilder.Append(cultureInfo, $" -font {FontFilePath}");
-        stringBuilder.Append(cultureInfo, $" -size {FontSize}");
+        stringBuilder.Append(cultureInfo, $@" -font ""{FontFilePath}""");
+        stringBuilder.Append(cultureInfo, $@" -size {FontSize}");
 
         if (UpdateCharset())
         {
-            stringBuilder.Append(cultureInfo, $" -charset {CharsetPath}");
+            stringBuilder.Append(cultureInfo, $@" -charset ""{CharsetPath}""");
         }
         else if (IsAllGlyphs)
         {
-            stringBuilder.Append(cultureInfo, $" -allglyphs");
+            stringBuilder.Append(cultureInfo, $@" -allglyphs");
         }
 
-        stringBuilder.Append(cultureInfo, $" -type {AtlasType.ToString().ToLowerInvariant()}");
-        stringBuilder.Append(cultureInfo, $" -format {AtlasImageFormat.ToString().ToLowerInvariant()}");
-        stringBuilder.Append(cultureInfo, $" -imageout {Path.Combine(folder, $"{outputName}.{AtlasImageFormat.ToString().ToLowerInvariant()}")}");
+        stringBuilder.Append(cultureInfo, $@" -type {AtlasType.ToString().ToLowerInvariant()}");
+        stringBuilder.Append(cultureInfo, $@" -format {AtlasImageFormat.ToString().ToLowerInvariant()}");
+        stringBuilder.Append(cultureInfo, $@" -imageout ""{Path.Combine(folder, $"{outputName}.{AtlasImageFormat.ToString().ToLowerInvariant()}")}""");
 
         if (IsOutputJson)
         {
-            stringBuilder.Append(cultureInfo, $" -json {Path.Combine(folder, $"{outputName}.json")}");
+            stringBuilder.Append(cultureInfo, $@" -json ""{Path.Combine(folder, $"{outputName}.json")}""");
         }
 
         if (IsOutputCsv)
         {
-            stringBuilder.Append(cultureInfo, $" -csv {Path.Combine(folder, $"{outputName}.csv")}");
+            stringBuilder.Append(cultureInfo, $@" -csv ""{Path.Combine(folder, $"{outputName}.csv")}""");
         }
 
         if (IsOutputArFont)
         {
-            stringBuilder.Append(cultureInfo, $" -arfont {Path.Combine(folder, $"{outputName}.arfont")}");
+            stringBuilder.Append(cultureInfo, $@" -arfont ""{Path.Combine(folder, $"{outputName}.arfont")}""");
         }
 
         if (IsOutputShadronPreview)
         {
-            stringBuilder.Append(cultureInfo, $" -shadron {Path.Combine(folder, $"{outputName}.shadron")}");
+            stringBuilder.Append(cultureInfo, $@" -shadron ""{Path.Combine(folder, $"{outputName}.shadron")}""");
         }
 
         return stringBuilder.ToString();
@@ -158,13 +162,13 @@ public partial class Generator : ObservableObject
 
         StringBuilder stringBuilder = new();
 
-        stringBuilder.Append(cultureInfo, $" -font {FontFilePath}");
-        stringBuilder.Append(cultureInfo, $" -size {FontSize}");
-        stringBuilder.Append(cultureInfo, $" -chars 65");
-        stringBuilder.Append(cultureInfo, $" -type {AtlasType.ToString().ToLowerInvariant()}");
-        stringBuilder.Append(cultureInfo, $" -format {AtlasImageFormat.Bin.ToString().ToLowerInvariant()}");
-        stringBuilder.Append(cultureInfo, $" -imageout {outputBin}");
-        stringBuilder.Append(cultureInfo, $" -json {outputJson}");
+        stringBuilder.Append(cultureInfo, $@" -font ""{FontFilePath}""");
+        stringBuilder.Append(cultureInfo, $@" -size {FontSize}");
+        stringBuilder.Append(cultureInfo, $@" -chars 65");
+        stringBuilder.Append(cultureInfo, $@" -type {AtlasType.ToString().ToLowerInvariant()}");
+        stringBuilder.Append(cultureInfo, $@" -format bin");
+        stringBuilder.Append(cultureInfo, $@" -imageout ""{outputBin}""");
+        stringBuilder.Append(cultureInfo, $@" -json ""{outputJson}""");
 
         return stringBuilder.ToString();
     }

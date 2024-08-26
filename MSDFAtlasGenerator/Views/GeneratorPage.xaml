@@ -20,10 +20,17 @@
         <DockPanel Grid.Column="0"
                    Margin="0,0,10,0">
 
-            <Button HorizontalAlignment="Right"
-                    Content="Generate"
-                    Command="{Binding GenerateCommand}"
-                    DockPanel.Dock="Bottom" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        DockPanel.Dock="Bottom">
+                <Button Margin="0,0,4,0"
+                        Content="Preview"
+                        Command="{Binding PreviewCommand}" />
+
+                <Button Margin="4,0,0,0"
+                        Content="Generate"
+                        Command="{Binding GenerateCommand}" />
+            </StackPanel>
 
             <TabControl>
                 <TabItem Header="Easy Setting">
@@ -90,6 +97,7 @@
         <TabControl Grid.Column="1"
                     Margin="10,0,0,0">
             <TabItem Header="Preview">
+                <controls:Preview />
             </TabItem>
         </TabControl>
     </Grid>

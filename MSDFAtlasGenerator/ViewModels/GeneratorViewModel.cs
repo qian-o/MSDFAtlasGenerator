@@ -11,9 +11,6 @@ namespace MSDFAtlasGenerator.ViewModels;
 public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<GeneratorPage>(view)
 {
     [ObservableProperty]
-    private string? previewImagePath;
-
-    [ObservableProperty]
     private string? fontFilePath;
 
     [ObservableProperty]
@@ -45,6 +42,16 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
 
     [ObservableProperty]
     private Generator generator = new();
+
+    [RelayCommand]
+    private void Preview()
+    {
+        UpdateGenerator();
+
+        if (Generator.GeneratePreview(out _, out _))
+        {
+        }
+    }
 
     [RelayCommand]
     private async Task Generate()
