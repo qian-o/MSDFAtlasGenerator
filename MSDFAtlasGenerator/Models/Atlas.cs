@@ -18,10 +18,10 @@ public partial class Atlas : ObservableObject
     private double size;
 
     [ObservableProperty]
-    private double width;
+    private int width;
 
     [ObservableProperty]
-    private double height;
+    private int height;
 
     [ObservableProperty]
     private YDirection yOrigin;

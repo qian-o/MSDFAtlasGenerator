@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using MSDFAtlasGenerator.Contracts;
 using MSDFAtlasGenerator.Enums;
+using MSDFAtlasGenerator.Models;
 using MSDFAtlasGenerator.Tools;
 using MSDFAtlasGenerator.Views;
 
@@ -43,13 +44,17 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     [ObservableProperty]
     private Generator generator = new();
 
+    [ObservableProperty]
+    private ImageData? previewData;
+
     [RelayCommand]
     private void Preview()
     {
         UpdateGenerator();
 
-        if (Generator.GeneratePreview(out _, out _))
+        if (Generator.GeneratePreview(out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? rgba))
         {
+            PreviewData = new ImageData(jsonAtlasMetrics!.Atlas.Width, jsonAtlasMetrics.Atlas.Height, rgba);
         }
     }
 

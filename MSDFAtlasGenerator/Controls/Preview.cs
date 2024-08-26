@@ -2,41 +2,58 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using MSDFAtlasGenerator.Models;
 
 namespace MSDFAtlasGenerator.Controls;
 
 public class Preview : Control
 {
-    public static readonly DependencyProperty RgbaProperty = DependencyProperty.Register(nameof(Rgba), typeof(byte[]), typeof(Preview), new PropertyMetadata(null));
+    public static readonly DependencyProperty ImageDataProperty = DependencyProperty.Register(nameof(ImageData),
+                                                                                              typeof(ImageData),
+                                                                                              typeof(Preview),
+                                                                                              new PropertyMetadata(null, (a, _) => ((Preview)a).UpdatePreview()));
+
+    public ImageData ImageData
+    {
+        get { return (ImageData)GetValue(ImageDataProperty); }
+        set { SetValue(ImageDataProperty, value); }
+    }
 
     private WriteableBitmap? previewImage;
 
-    public byte[] Rgba
-    {
-        get { return (byte[])GetValue(RgbaProperty); }
-        set { SetValue(RgbaProperty, value); }
-    }
-
     protected override void OnRender(DrawingContext drawingContext)
     {
-        int width = (int)ActualWidth;
-        int height = (int)ActualHeight;
-
-        if (width < 1 || height < 1)
+        if (previewImage == null)
         {
             return;
         }
 
-        if (previewImage is null || previewImage.PixelWidth != width || previewImage.PixelHeight != height)
+        ImageBrush imageBrush = new(previewImage)
         {
-            previewImage = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
-        }
+            AlignmentX = AlignmentX.Center,
+            AlignmentY = AlignmentY.Center,
+            Stretch = Stretch.None
+        };
 
-        if (Rgba != null)
+        drawingContext.DrawRectangle(imageBrush, null, new Rect(0, 0, ActualWidth, ActualHeight));
+    }
+
+    private void UpdatePreview()
+    {
+        if (ImageData == null)
         {
-            previewImage.WritePixels(new Int32Rect(0, 0, width, height), Rgba, width * 4, 0);
+            previewImage = null;
         }
+        else
+        {
+            if (previewImage is null || previewImage.PixelWidth != ImageData.Width || previewImage.PixelHeight != ImageData.Height)
+            {
+                previewImage = new WriteableBitmap(ImageData.Width, ImageData.Height, 96, 96, PixelFormats.Bgra32, null);
+            }
 
-        drawingContext.DrawImage(previewImage, new Rect(0, 0, width, height));
+            previewImage.WritePixels(new Int32Rect(0, 0, ImageData.Width, ImageData.Height), ImageData.Data, ImageData.Width * 4, 0);
+
+            InvalidateVisual();
+        }
     }
 }
