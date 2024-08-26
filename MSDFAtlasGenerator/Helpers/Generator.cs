@@ -49,7 +49,7 @@ public partial class Generator : ObservableObject
             return false;
         }
 
-        ProcessHelpers.RunNoWindow(ToolPath, GetArguments(UpdateCharset(), folder));
+        ProcessHelpers.RunNoWindow(ToolPath, GetArguments(folder));
 
         return true;
     }
@@ -105,7 +105,7 @@ public partial class Generator : ObservableObject
         return true;
     }
 
-    private string GetArguments(bool useCharsetPath, string folder)
+    private string GetArguments(string folder)
     {
         string outputName = Path.GetFileNameWithoutExtension(FontFilePath)!;
 
@@ -116,7 +116,7 @@ public partial class Generator : ObservableObject
         stringBuilder.Append(cultureInfo, $" -font {FontFilePath}");
         stringBuilder.Append(cultureInfo, $" -size {FontSize}");
 
-        if (useCharsetPath)
+        if (UpdateCharset())
         {
             stringBuilder.Append(cultureInfo, $" -charset {CharsetPath}");
         }
