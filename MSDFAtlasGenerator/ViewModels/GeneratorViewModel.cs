@@ -57,7 +57,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     private Generator generator = new();
 
     [RelayCommand]
-    private void Generate()
+    private async Task Generate()
     {
         OpenFolderDialog openFolderDialog = new();
 
@@ -65,7 +65,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
         {
             UpdateGenerator();
 
-            if (Generator.Generate(openFolderDialog.FolderName))
+            if (await Generator.Generate(openFolderDialog.FolderName))
             {
             }
         }
