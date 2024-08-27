@@ -43,7 +43,7 @@
                         <controls:NumberEditor Margin="0,24,0,0"
                                                Title="Font Em Size"
                                                MinValue="1"
-                                               MaxValue="256"
+                                               MaxValue="120"
                                                Value="{Binding FontSize, Mode=TwoWay}"
                                                DecimalPlaces="2"
                                                Step="0.5" />
