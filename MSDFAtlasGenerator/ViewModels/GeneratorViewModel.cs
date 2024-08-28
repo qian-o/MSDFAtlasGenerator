@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using MSDFAtlasGenerator.Contracts;
@@ -69,6 +70,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
 
             if (await Generator.Generate(openFolderDialog.FolderName))
             {
+                Process.Start("explorer.exe", openFolderDialog.FolderName);
             }
         }
     }

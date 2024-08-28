@@ -99,6 +99,10 @@
             <TabItem Header="Preview">
                 <controls:Preview ImageData="{Binding PreviewData}" />
             </TabItem>
+
+            <TabItem Header="Output">
+                <controls:Output />
+            </TabItem>
         </TabControl>
     </Grid>
 </contracts:View>
