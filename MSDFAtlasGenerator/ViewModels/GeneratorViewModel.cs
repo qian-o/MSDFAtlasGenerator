@@ -48,6 +48,9 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     [ObservableProperty]
     private PreviewData? previewData;
 
+    [ObservableProperty]
+    private OutputData outputData = new();
+
     [RelayCommand]
     private void Preview()
     {
@@ -71,7 +74,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
         {
             UpdateGenerator();
 
-            if (await Generator.Generate(openFolderDialog.FolderName))
+            if (await Generator.Generate(openFolderDialog.FolderName, OutputData))
             {
                 ProcessHelpers.Start("explorer.exe", openFolderDialog.FolderName);
             }

@@ -101,7 +101,7 @@
             </TabItem>
 
             <TabItem Header="Output">
-                <controls:Output />
+                <controls:Output OutputData="{Binding OutputData}" />
             </TabItem>
         </TabControl>
     </Grid>

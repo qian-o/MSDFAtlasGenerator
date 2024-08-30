@@ -45,14 +45,14 @@ public partial class Generator : ObservableObject
     [ObservableProperty]
     private bool isOutputShadronPreview;
 
-    public async Task<bool> Generate(string folder)
+    public async Task<bool> Generate(string folder, OutputData outputData)
     {
         if (!Validate())
         {
             return false;
         }
 
-        await ProcessHelpers.RunCmdAsync(ToolPath, GetArguments(folder));
+        await ProcessHelpers.RunCmdAsync(ToolPath, GetArguments(folder), outputData.AddLog, outputData.AddLog);
 
         return true;
     }

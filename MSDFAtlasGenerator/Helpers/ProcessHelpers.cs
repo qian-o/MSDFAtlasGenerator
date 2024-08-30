@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using MSDFAtlasGenerator.Enums;
+using MSDFAtlasGenerator.Models;
 
 namespace MSDFAtlasGenerator.Helpers;
 
@@ -21,12 +23,10 @@ public static class ProcessHelpers
 
     public static void RunCmd(string fileName,
                               string? arguments = null,
-                              Action<string?>? outputReceived = null,
-                              Action<string?>? errorReceived = null)
+                              Action<Log>? outputReceived = null,
+                              Action<Log>? errorReceived = null)
     {
-        Process process = GetCmd(fileName, arguments, outputReceived, errorReceived);
-
-        process.Start();
+        Process process = StartCmd(fileName, arguments, outputReceived, errorReceived);
 
         process.WaitForExit();
 
@@ -35,22 +35,20 @@ public static class ProcessHelpers
 
     public static async Task RunCmdAsync(string fileName,
                                          string? arguments = null,
-                                         Action<string?>? outputReceived = null,
-                                         Action<string?>? errorReceived = null)
+                                         Action<Log>? outputReceived = null,
+                                         Action<Log>? errorReceived = null)
     {
-        Process process = GetCmd(fileName, arguments, outputReceived, errorReceived);
-
-        process.Start();
+        Process process = StartCmd(fileName, arguments, outputReceived, errorReceived);
 
         await process.WaitForExitAsync();
 
         process.Dispose();
     }
 
-    private static Process GetCmd(string fileName,
-                                  string? arguments = null,
-                                  Action<string?>? outputReceived = null,
-                                  Action<string?>? errorReceived = null)
+    private static Process StartCmd(string fileName,
+                                    string? arguments = null,
+                                    Action<Log>? outputReceived = null,
+                                    Action<Log>? errorReceived = null)
     {
         ProcessStartInfo startInfo = new()
         {
@@ -67,8 +65,25 @@ public static class ProcessHelpers
             StartInfo = startInfo
         };
 
-        process.OutputDataReceived += (sender, e) => outputReceived?.Invoke(e.Data);
-        process.ErrorDataReceived += (sender, e) => errorReceived?.Invoke(e.Data);
+        process.OutputDataReceived += (sender, e) =>
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                outputReceived?.Invoke(new Log(LogType.Info, e.Data));
+            }
+        };
+        process.ErrorDataReceived += (sender, e) =>
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                errorReceived?.Invoke(new Log(LogType.Error, e.Data));
+            }
+        };
+
+        process.Start();
+
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
 
         return process;
     }
