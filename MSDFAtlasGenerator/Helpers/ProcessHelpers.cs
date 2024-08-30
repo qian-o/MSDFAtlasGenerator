@@ -4,12 +4,27 @@ namespace MSDFAtlasGenerator.Helpers;
 
 public static class ProcessHelpers
 {
-    public static void Run(string fileName,
-                           string? arguments = null,
-                           Action<string?>? outputReceived = null,
-                           Action<string?>? errorReceived = null)
+    public static void Start(string fileName,
+                             string? arguments = null)
     {
-        Process process = GetProcess(fileName, arguments, outputReceived, errorReceived);
+        Process process = new()
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = fileName,
+                Arguments = arguments
+            }
+        };
+
+        process.Start();
+    }
+
+    public static void RunCmd(string fileName,
+                              string? arguments = null,
+                              Action<string?>? outputReceived = null,
+                              Action<string?>? errorReceived = null)
+    {
+        Process process = GetCmd(fileName, arguments, outputReceived, errorReceived);
 
         process.Start();
 
@@ -18,12 +33,12 @@ public static class ProcessHelpers
         process.Dispose();
     }
 
-    public static async Task RunAsync(string fileName,
-                                      string? arguments = null,
-                                      Action<string?>? outputReceived = null,
-                                      Action<string?>? errorReceived = null)
+    public static async Task RunCmdAsync(string fileName,
+                                         string? arguments = null,
+                                         Action<string?>? outputReceived = null,
+                                         Action<string?>? errorReceived = null)
     {
-        Process process = GetProcess(fileName, arguments, outputReceived, errorReceived);
+        Process process = GetCmd(fileName, arguments, outputReceived, errorReceived);
 
         process.Start();
 
@@ -32,10 +47,10 @@ public static class ProcessHelpers
         process.Dispose();
     }
 
-    private static Process GetProcess(string fileName,
-                                      string? arguments = null,
-                                      Action<string?>? outputReceived = null,
-                                      Action<string?>? errorReceived = null)
+    private static Process GetCmd(string fileName,
+                                  string? arguments = null,
+                                  Action<string?>? outputReceived = null,
+                                  Action<string?>? errorReceived = null)
     {
         ProcessStartInfo startInfo = new()
         {

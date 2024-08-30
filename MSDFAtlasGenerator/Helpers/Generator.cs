@@ -52,7 +52,7 @@ public partial class Generator : ObservableObject
             return false;
         }
 
-        await ProcessHelpers.RunAsync(ToolPath, GetArguments(folder));
+        await ProcessHelpers.RunCmdAsync(ToolPath, GetArguments(folder));
 
         return true;
     }
@@ -70,7 +70,7 @@ public partial class Generator : ObservableObject
         string outputBin = Path.GetTempFileName();
         string outputJson = Path.GetTempFileName();
 
-        ProcessHelpers.Run(ToolPath, GetPreviewArguments(outputBin, outputJson));
+        ProcessHelpers.RunCmd(ToolPath, GetPreviewArguments(outputBin, outputJson));
 
         jsonAtlasMetrics = JsonConvert.DeserializeObject<JsonAtlasMetrics>(File.ReadAllText(outputJson))!;
         bgra = BinToBgra(outputBin);

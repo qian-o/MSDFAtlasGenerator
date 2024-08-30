@@ -8,15 +8,15 @@ namespace MSDFAtlasGenerator.Controls;
 
 public class Preview : Control
 {
-    public static readonly DependencyProperty ImageDataProperty = DependencyProperty.Register(nameof(ImageData),
-                                                                                              typeof(ImageData),
-                                                                                              typeof(Preview),
-                                                                                              new PropertyMetadata(null, (a, _) => ((Preview)a).UpdatePreview()));
+    public static readonly DependencyProperty PreviewDataProperty = DependencyProperty.Register(nameof(PreviewData),
+                                                                                                typeof(PreviewData),
+                                                                                                typeof(Preview),
+                                                                                                new PropertyMetadata(null, (a, _) => ((Preview)a).UpdatePreview()));
 
-    public ImageData ImageData
+    public PreviewData? PreviewData
     {
-        get { return (ImageData)GetValue(ImageDataProperty); }
-        set { SetValue(ImageDataProperty, value); }
+        get { return (PreviewData?)GetValue(PreviewDataProperty); }
+        set { SetValue(PreviewDataProperty, value); }
     }
 
     private WriteableBitmap? previewImage;
@@ -57,20 +57,20 @@ public class Preview : Control
 
     private void UpdatePreview()
     {
-        if (ImageData == null)
+        if (PreviewData == null)
         {
             previewImage = null;
         }
         else
         {
-            if (previewImage is null || previewImage.PixelWidth != ImageData.Width || previewImage.PixelHeight != ImageData.Height)
+            if (previewImage is null || previewImage.PixelWidth != PreviewData.Width || previewImage.PixelHeight != PreviewData.Height)
             {
-                previewImage = new WriteableBitmap(ImageData.Width, ImageData.Height, 96, 96, PixelFormats.Bgra32, null);
+                previewImage = new WriteableBitmap(PreviewData.Width, PreviewData.Height, 96, 96, PixelFormats.Bgra32, null);
             }
 
-            previewImage.WritePixels(new Int32Rect(0, 0, ImageData.Width, ImageData.Height), ImageData.Bgra, ImageData.Width * 4, 0);
+            previewImage.WritePixels(new Int32Rect(0, 0, (int)PreviewData.Width, (int)PreviewData.Height), (Array?)PreviewData.Bgra, (int)(PreviewData.Width * 4), 0);
 
-            flipY = ImageData.FlipY;
+            flipY = PreviewData.FlipY;
 
             InvalidateVisual();
         }

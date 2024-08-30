@@ -3,9 +3,6 @@ using MSDFAtlasGenerator.ViewModels;
 
 namespace MSDFAtlasGenerator.Views;
 
-/// <summary>
-/// MainPage.xaml 的交互逻辑
-/// </summary>
 public partial class MainPage : View
 {
     public MainPage()

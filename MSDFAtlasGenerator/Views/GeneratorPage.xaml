@@ -97,7 +97,7 @@
         <TabControl Grid.Column="1"
                     Margin="10,0,0,0">
             <TabItem Header="Preview">
-                <controls:Preview ImageData="{Binding PreviewData}" />
+                <controls:Preview PreviewData="{Binding PreviewData}" />
             </TabItem>
 
             <TabItem Header="Output">

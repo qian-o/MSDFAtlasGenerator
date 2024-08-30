@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using MSDFAtlasGenerator.Contracts;
 using MSDFAtlasGenerator.Enums;
+using MSDFAtlasGenerator.Helpers;
 using MSDFAtlasGenerator.Models;
 using MSDFAtlasGenerator.Tools;
 using MSDFAtlasGenerator.Views;
@@ -46,7 +46,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     private Generator generator = new();
 
     [ObservableProperty]
-    private ImageData? previewData;
+    private PreviewData? previewData;
 
     [RelayCommand]
     private void Preview()
@@ -55,7 +55,10 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
 
         if (Generator.GeneratePreview(out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? rgba))
         {
-            PreviewData = new ImageData(jsonAtlasMetrics!.Atlas.Width, jsonAtlasMetrics.Atlas.Height, rgba, jsonAtlasMetrics!.Atlas.YOrigin == YDirection.Bottom);
+            PreviewData = new PreviewData(jsonAtlasMetrics!.Atlas.Width,
+                                          jsonAtlasMetrics.Atlas.Height,
+                                          rgba,
+                                          jsonAtlasMetrics!.Atlas.YOrigin == YDirection.Bottom);
         }
     }
 
@@ -70,7 +73,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
 
             if (await Generator.Generate(openFolderDialog.FolderName))
             {
-                Process.Start("explorer.exe", openFolderDialog.FolderName);
+                ProcessHelpers.Start("explorer.exe", openFolderDialog.FolderName);
             }
         }
     }

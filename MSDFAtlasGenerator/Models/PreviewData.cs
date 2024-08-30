@@ -2,9 +2,9 @@
 
 namespace MSDFAtlasGenerator.Models;
 
-public partial class ImageData : ObservableObject
+public partial class PreviewData : ObservableObject
 {
-    public ImageData(int width, int height, byte[]? bgra, bool flipY)
+    public PreviewData(int width, int height, byte[]? bgra, bool flipY)
     {
         Width = width;
         Height = height;
