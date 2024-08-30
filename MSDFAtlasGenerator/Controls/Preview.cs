@@ -68,7 +68,7 @@ public class Preview : Control
                 previewImage = new WriteableBitmap(PreviewData.Width, PreviewData.Height, 96, 96, PixelFormats.Bgra32, null);
             }
 
-            previewImage.WritePixels(new Int32Rect(0, 0, (int)PreviewData.Width, (int)PreviewData.Height), (Array?)PreviewData.Bgra, (int)(PreviewData.Width * 4), 0);
+            previewImage.WritePixels(new Int32Rect(0, 0, PreviewData.Width, PreviewData.Height), PreviewData.Bgra, PreviewData.Width * 4, 0);
 
             flipY = PreviewData.FlipY;
 
