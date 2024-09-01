@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -24,34 +25,47 @@ public class Preview : Control
 
     protected override void OnRender(DrawingContext drawingContext)
     {
-        if (previewImage == null)
-        {
-            return;
-        }
-
         double width = ActualWidth;
         double height = ActualHeight;
 
-        ImageBrush imageBrush = new(previewImage)
+        if (previewImage == null)
         {
-            AlignmentX = AlignmentX.Center,
-            AlignmentY = AlignmentY.Center,
-            Stretch = Stretch.Uniform
-        };
+            FormattedText formattedText = new("No preview available.",
+                                              CultureInfo.InvariantCulture,
+                                              FlowDirection.LeftToRight,
+                                              new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
+                                              16.0,
+                                              (Brush)GetValue(ForegroundProperty),
+                                              VisualTreeHelper.GetDpi(this).DpiScaleX);
 
-        if (flipY)
-        {
-            drawingContext.PushTransform(new TranslateTransform(0.0, height));
-            drawingContext.PushTransform(new ScaleTransform(1.0, -1.0));
+            drawingContext.DrawText(formattedText,
+                                    new Point((width / 2.0) - (formattedText.Width / 2.0), (height / 2.0) - (formattedText.Height / 2.0)));
 
-            drawingContext.DrawRectangle(imageBrush, null, new Rect(0.0, 0.0, width, height));
-
-            drawingContext.Pop();
-            drawingContext.Pop();
+            return;
         }
         else
         {
-            drawingContext.DrawRectangle(imageBrush, null, new Rect(0.0, 0.0, width, height));
+            ImageBrush imageBrush = new(previewImage)
+            {
+                AlignmentX = AlignmentX.Center,
+                AlignmentY = AlignmentY.Center,
+                Stretch = Stretch.Uniform
+            };
+
+            if (flipY)
+            {
+                drawingContext.PushTransform(new TranslateTransform(0.0, height));
+                drawingContext.PushTransform(new ScaleTransform(1.0, -1.0));
+
+                drawingContext.DrawRectangle(imageBrush, null, new Rect(0.0, 0.0, width, height));
+
+                drawingContext.Pop();
+                drawingContext.Pop();
+            }
+            else
+            {
+                drawingContext.DrawRectangle(imageBrush, null, new Rect(0.0, 0.0, width, height));
+            }
         }
     }
 
