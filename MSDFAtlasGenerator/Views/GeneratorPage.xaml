@@ -97,11 +97,13 @@
         <TabControl Grid.Column="1"
                     Margin="10,0,0,0">
             <TabItem Header="Preview">
-                <controls:Preview PreviewData="{Binding PreviewData}" />
+                <controls:Preview Margin="4"
+                                  PreviewData="{Binding PreviewData}" />
             </TabItem>
 
             <TabItem Header="Output">
-                <controls:Output OutputData="{Binding OutputData}" />
+                <controls:Output Margin="4"
+                                 OutputData="{Binding OutputData}" />
             </TabItem>
         </TabControl>
     </Grid>
