@@ -26,7 +26,7 @@ public partial class Output : UserControl
     {
         if (e.ExtentHeightChange > 0.0)
         {
-            ((ScrollViewer)sender).ScrollToBottom();
+            ((ScrollViewer)e.OriginalSource).ScrollToBottom();
         }
     }
 }

@@ -57,6 +57,8 @@ public static class ProcessHelpers
                                     string? arguments = null,
                                     OutputData? outputData = null)
     {
+        outputData?.AddLog(new Log(LogType.Info, $"Running: {fileName} {arguments}"));
+
         ProcessStartInfo startInfo = new()
         {
             FileName = fileName,
