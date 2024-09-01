@@ -20,7 +20,7 @@ public static class ProcessHelpers
 
         process.Start();
     }
-    
+
     public static void OpenUri(Uri uri)
     {
         Start("explorer.exe", uri.ToString());
