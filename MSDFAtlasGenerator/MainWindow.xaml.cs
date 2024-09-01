@@ -16,5 +16,7 @@ public partial class MainWindow : FluentWindow
         SystemThemeWatcher.Watch(this);
 
         Loaded += (_, _) => RootNavigation.Navigate(typeof(MainPage));
+
+        App.SnackbarService.SetSnackbarPresenter(SnackbarPresenter);
     }
 }

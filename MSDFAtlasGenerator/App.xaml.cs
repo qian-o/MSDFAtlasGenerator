@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Wpf.Ui;
 
 namespace MSDFAtlasGenerator;
 /// <summary>
@@ -6,5 +7,6 @@ namespace MSDFAtlasGenerator;
 /// </summary>
 public partial class App : Application
 {
+    public static ISnackbarService SnackbarService { get; } = new SnackbarService();
 }
 

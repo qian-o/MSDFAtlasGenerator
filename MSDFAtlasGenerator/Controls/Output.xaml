@@ -13,9 +13,11 @@
              ScrollViewer.ScrollChanged="ScrollChanged">
         <ListBox.ItemTemplate>
             <DataTemplate DataType="models:Log">
-                <TextBlock Text="{Binding Message}"
-                           ToolTip="{Binding Message}"
-                           TextTrimming="WordEllipsis" />
+                <ContentControl MouseDoubleClick="Item_MouseDoubleClick">
+                    <TextBlock Text="{Binding Message}"
+                               ToolTip="{Binding Message}"
+                               TextTrimming="WordEllipsis" />
+                </ContentControl>
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>

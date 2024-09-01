@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using MSDFAtlasGenerator.Models;
+using Wpf.Ui.Controls;
 
 namespace MSDFAtlasGenerator.Controls;
 
@@ -28,5 +30,16 @@ public partial class Output : UserControl
         {
             ((ScrollViewer)e.OriginalSource).ScrollToBottom();
         }
+    }
+
+    private void Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        Clipboard.SetText(((Log)((FrameworkElement)sender).DataContext).Message);
+
+        App.SnackbarService.Show("Copied to clipboard",
+                                 "The message has been copied to the clipboard.",
+                                 ControlAppearance.Secondary,
+                                 null,
+                                 App.SnackbarService.DefaultTimeOut);
     }
 }

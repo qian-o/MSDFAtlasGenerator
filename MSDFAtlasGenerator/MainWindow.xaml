@@ -58,6 +58,10 @@
                                Text="Settings" />
                 </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
+
+            <ui:NavigationView.ContentOverlay>
+                <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
+            </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
     </Grid>
 </ui:FluentWindow>
