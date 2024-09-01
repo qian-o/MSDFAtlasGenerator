@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -11,8 +12,10 @@ namespace MSDFAtlasGenerator.Helpers;
 
 public partial class Generator : ObservableObject
 {
-    private readonly string ToolPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "msdf-atlas-gen.exe");
-    private readonly string CharsetPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "charset.txt");
+    private static readonly string ToolPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "msdf-atlas-gen.exe");
+    private static readonly string CharsetPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "charset.txt");
+
+    public static FileVersionInfo Version => FileVersionInfo.GetVersionInfo(ToolPath);
 
     public GeneratorArguments Arguments { get; } = new();
 

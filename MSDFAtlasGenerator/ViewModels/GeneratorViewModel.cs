@@ -49,7 +49,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
 
             if (await Generator.Generate(openFolderDialog.FolderName, OutputData))
             {
-                ProcessHelpers.Start("explorer.exe", openFolderDialog.FolderName);
+                ProcessHelpers.OpenFolder(openFolderDialog.FolderName);
 
                 OutputData.AddLog(new Log(LogType.Info, "Output folder opened."));
                 OutputData.AddLog(new Log(LogType.Info, "Generation completed."));

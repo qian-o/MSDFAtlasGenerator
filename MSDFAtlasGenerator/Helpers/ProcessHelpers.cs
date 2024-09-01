@@ -20,6 +20,16 @@ public static class ProcessHelpers
 
         process.Start();
     }
+    
+    public static void OpenUri(Uri uri)
+    {
+        Start("explorer.exe", uri.ToString());
+    }
+
+    public static void OpenFolder(string folderPath)
+    {
+        Start("explorer.exe", folderPath);
+    }
 
     public static void RunCmd(string fileName,
                               string? arguments = null,

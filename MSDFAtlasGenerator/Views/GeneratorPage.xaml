@@ -36,7 +36,7 @@
             <TabControl>
                 <TabItem Header="Easy Setting">
                     <StackPanel Orientation="Vertical"
-                                Margin="0,10,0,10">
+                                Margin="4">
                         <controls:OpenFileEditor Title="Font"
                                                  Filter="Font Files (*.ttf, *.otf)|*.ttf;*.otf|All Files (*.*)|*.*"
                                                  FilePath="{Binding Generator.Arguments.FontFilePath, Mode=TwoWay}" />
@@ -82,7 +82,7 @@
 
                 <TabItem Header="Output Setting">
                     <StackPanel Orientation="Vertical"
-                                Margin="0,10,0,10">
+                                Margin="4">
                         <controls:CheckBoxEditor Title="Output JSON"
                                                  IsChecked="{Binding Generator.Arguments.IsOutputJson, Mode=TwoWay}" />
 
