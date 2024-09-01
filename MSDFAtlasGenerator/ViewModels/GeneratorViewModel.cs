@@ -23,7 +23,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     [RelayCommand]
     private void Preview()
     {
-        OutputData.AddLog(new Log(LogType.Info, "--- Preview ---"));
+        OutputData.AddLog(new Log(LogType.Info, "--- Preview ---", false));
 
         if (Generator.GeneratePreview(OutputData, out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? rgba))
         {
@@ -35,7 +35,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
             OutputData.AddLog(new Log(LogType.Info, "Preview completed."));
         }
 
-        OutputData.AddLog(new Log(LogType.Info, "--- End ---"));
+        OutputData.AddLog(new Log(LogType.Info, "--- End ---", false));
     }
 
     [RelayCommand]
@@ -45,7 +45,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
 
         if (openFolderDialog.ShowDialog() == true)
         {
-            OutputData.AddLog(new Log(LogType.Info, "--- Generation ---"));
+            OutputData.AddLog(new Log(LogType.Info, "--- Generation ---", false));
 
             if (await Generator.Generate(openFolderDialog.FolderName, OutputData))
             {
@@ -55,7 +55,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
                 OutputData.AddLog(new Log(LogType.Info, "Generation completed."));
             }
 
-            OutputData.AddLog(new Log(LogType.Info, "--- End ---"));
+            OutputData.AddLog(new Log(LogType.Info, "--- End ---", false));
         }
     }
 }

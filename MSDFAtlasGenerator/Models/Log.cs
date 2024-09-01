@@ -5,10 +5,10 @@ namespace MSDFAtlasGenerator.Models;
 
 public partial class Log : ObservableObject
 {
-    public Log(LogType type, string message)
+    public Log(LogType type, string message, bool appendTime = true)
     {
         Type = type;
-        Message = $"[{DateTime.Now:HH:mm:ss}] {message}";
+        Message = appendTime ? $"[{DateTime.Now:HH:mm:ss}] {message}" : message;
     }
 
     [ObservableProperty]
