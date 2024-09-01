@@ -5,6 +5,8 @@ This is a simple MSDF atlas generator, based on [msdf-atlas-gen](https://github.
 ## Note
 Some parameters may not be the same as the original tool, please refer to the source code or the output page for specific content.
 
+Tip: Double-click the log to copy it to the clipboard.
+
 ## Screenshots
 ![1](./Screenshots/1.png)
 ![2](./Screenshots/2.png)

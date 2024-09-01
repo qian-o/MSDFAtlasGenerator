@@ -25,12 +25,12 @@
                         HorizontalAlignment="Right"
                         DockPanel.Dock="Bottom">
                 <Button Margin="0,0,4,0"
-                        Content="Preview"
-                        Command="{Binding PreviewCommand}" />
-
-                <Button Margin="4,0,0,0"
                         Content="Generate"
                         Command="{Binding GenerateCommand}" />
+
+                <Button Margin="4,0,0,0"
+                        Content="Preview"
+                        Command="{Binding PreviewCommand}" />
             </StackPanel>
 
             <TabControl>
