@@ -38,36 +38,44 @@
                                 Margin="0,10,0,10">
                         <controls:OpenFileEditor Title="Font"
                                                  Filter="Font Files (*.ttf, *.otf)|*.ttf;*.otf|All Files (*.*)|*.*"
-                                                 FilePath="{Binding FontFilePath, Mode=TwoWay}" />
+                                                 FilePath="{Binding Generator.Arguments.FontFilePath, Mode=TwoWay}" />
 
                         <controls:NumberEditor Margin="0,24,0,0"
-                                               Title="Font Em Size"
+                                               Title="Font Size (em)"
                                                MinValue="1"
-                                               MaxValue="120"
-                                               Value="{Binding FontSize, Mode=TwoWay}"
+                                               MaxValue="80"
+                                               Value="{Binding Generator.Arguments.FontScale, Mode=TwoWay}"
+                                               DecimalPlaces="2"
+                                               Step="0.5" />
+
+                        <controls:NumberEditor Margin="0,24,0,0"
+                                               Title="Padding (px)"
+                                               MinValue="0"
+                                               MaxValue="20"
+                                               Value="{Binding Generator.Arguments.Padding, Mode=TwoWay}"
                                                DecimalPlaces="2"
                                                Step="0.5" />
 
                         <controls:OpenFileEditor Margin="0,24,0,0"
                                                  Title="Charset"
                                                  Filter="Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
-                                                 FilePath="{Binding CharsetFilePath, Mode=TwoWay}" />
+                                                 FilePath="{Binding Generator.Arguments.CharsetFilePath, Mode=TwoWay}" />
 
                         <controls:CheckBoxEditor Margin="0,24,0,0"
                                                  Title="All Glyphs"
-                                                 IsChecked="{Binding IsAllGlyphs, Mode=TwoWay}" />
+                                                 IsChecked="{Binding Generator.Arguments.IsAllGlyphs, Mode=TwoWay}" />
 
                         <controls:ComboBoxEditor Margin="0,24,0,0"
                                                  Title="Atlas Type"
                                                  IsEnum="True"
                                                  EnumType="enums:AtlasType"
-                                                 SelectedItem="{Binding AtlasType, Mode=TwoWay}" />
+                                                 SelectedItem="{Binding Generator.Arguments.AtlasType, Mode=TwoWay}" />
 
                         <controls:ComboBoxEditor Margin="0,24,0,0"
                                                  Title="Atlas Image Format"
                                                  IsEnum="True"
                                                  EnumType="enums:AtlasImageFormat"
-                                                 SelectedItem="{Binding AtlasImageFormat, Mode=TwoWay}" />
+                                                 SelectedItem="{Binding Generator.Arguments.AtlasImageFormat, Mode=TwoWay}" />
                     </StackPanel>
                 </TabItem>
 
@@ -75,19 +83,19 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="0,10,0,10">
                         <controls:CheckBoxEditor Title="Output JSON"
-                                                 IsChecked="{Binding IsOutputJson, Mode=TwoWay}" />
+                                                 IsChecked="{Binding Generator.Arguments.IsOutputJson, Mode=TwoWay}" />
 
                         <controls:CheckBoxEditor Margin="0,24,0,0"
                                                  Title="Output CSV"
-                                                 IsChecked="{Binding IsOutputCsv, Mode=TwoWay}" />
+                                                 IsChecked="{Binding Generator.Arguments.IsOutputCsv, Mode=TwoWay}" />
 
                         <controls:CheckBoxEditor Margin="0,24,0,0"
                                                  Title="Output Artery Font"
-                                                 IsChecked="{Binding IsOutputArFont, Mode=TwoWay}" />
+                                                 IsChecked="{Binding Generator.Arguments.IsOutputArFont, Mode=TwoWay}" />
 
                         <controls:CheckBoxEditor Margin="0,24,0,0"
                                                  Title="Output Shadron script"
-                                                 IsChecked="{Binding IsOutputShadronPreview, Mode=TwoWay}" />
+                                                 IsChecked="{Binding Generator.Arguments.IsOutputShadronPreview, Mode=TwoWay}" />
                     </StackPanel>
                 </TabItem>
             </TabControl>

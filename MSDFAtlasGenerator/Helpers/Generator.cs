@@ -4,46 +4,17 @@ using System.IO;
 using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MSDFAtlasGenerator.Enums;
-using MSDFAtlasGenerator.Helpers;
 using MSDFAtlasGenerator.Models;
 using Newtonsoft.Json;
 
-namespace MSDFAtlasGenerator.Tools;
+namespace MSDFAtlasGenerator.Helpers;
 
 public partial class Generator : ObservableObject
 {
     private readonly string ToolPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "msdf-atlas-gen.exe");
     private readonly string CharsetPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tools", "charset.txt");
 
-    [ObservableProperty]
-    private string? fontFilePath;
-
-    [ObservableProperty]
-    private double fontSize = 64;
-
-    [ObservableProperty]
-    private string? charsetFilePath;
-
-    [ObservableProperty]
-    private bool isAllGlyphs;
-
-    [ObservableProperty]
-    private AtlasType atlasType = AtlasType.MSDF;
-
-    [ObservableProperty]
-    private AtlasImageFormat atlasImageFormat = AtlasImageFormat.Png;
-
-    [ObservableProperty]
-    private bool isOutputJson = true;
-
-    [ObservableProperty]
-    private bool isOutputCsv;
-
-    [ObservableProperty]
-    private bool isOutputArFont;
-
-    [ObservableProperty]
-    private bool isOutputShadronPreview;
+    public GeneratorArguments Arguments { get; } = new();
 
     public async Task<bool> Generate(string folder, OutputData outputData)
     {
@@ -52,12 +23,12 @@ public partial class Generator : ObservableObject
             return false;
         }
 
-        await ProcessHelpers.RunCmdAsync(ToolPath, GetArguments(folder), outputData.AddLog, outputData.AddLog);
+        await ProcessHelpers.RunCmdAsync(ToolPath, GetArguments(folder), outputData);
 
         return true;
     }
 
-    public bool GeneratePreview(out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? bgra)
+    public bool GeneratePreview(OutputData outputData, out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? bgra)
     {
         jsonAtlasMetrics = null;
         bgra = null;
@@ -70,7 +41,7 @@ public partial class Generator : ObservableObject
         string outputBin = Path.GetTempFileName();
         string outputJson = Path.GetTempFileName();
 
-        ProcessHelpers.RunCmd(ToolPath, GetPreviewArguments(outputBin, outputJson));
+        ProcessHelpers.RunCmd(ToolPath, GetPreviewArguments(outputBin, outputJson), outputData);
 
         jsonAtlasMetrics = JsonConvert.DeserializeObject<JsonAtlasMetrics>(File.ReadAllText(outputJson))!;
         bgra = BinToBgra(outputBin);
@@ -83,17 +54,17 @@ public partial class Generator : ObservableObject
 
     private bool Validate()
     {
-        return !string.IsNullOrWhiteSpace(FontFilePath);
+        return !string.IsNullOrWhiteSpace(Arguments.FontFilePath);
     }
 
     private bool UpdateCharset()
     {
-        if (string.IsNullOrWhiteSpace(CharsetFilePath))
+        if (string.IsNullOrWhiteSpace(Arguments.CharsetFilePath))
         {
             return false;
         }
 
-        int[] charset = File.ReadAllText(CharsetFilePath, Encoding.UTF8)
+        int[] charset = File.ReadAllText(Arguments.CharsetFilePath, Encoding.UTF8)
                             .Distinct()
                             .Select(static item => (int)item)
                             .ToArray();
@@ -112,44 +83,45 @@ public partial class Generator : ObservableObject
 
     private string GetArguments(string folder)
     {
-        string outputName = Path.GetFileNameWithoutExtension(FontFilePath)!;
+        string outputName = Path.GetFileNameWithoutExtension(Arguments.FontFilePath)!;
 
         CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
         StringBuilder stringBuilder = new();
 
-        stringBuilder.Append(cultureInfo, $@" -font ""{FontFilePath}""");
-        stringBuilder.Append(cultureInfo, $@" -size {FontSize}");
+        stringBuilder.Append(cultureInfo, $@" -font ""{Arguments.FontFilePath}""");
+        stringBuilder.Append(cultureInfo, $@" -fontscale {Arguments.FontScale}");
+        stringBuilder.Append(cultureInfo, $@" -pxpadding {Arguments.Padding}");
 
         if (UpdateCharset())
         {
             stringBuilder.Append(cultureInfo, $@" -charset ""{CharsetPath}""");
         }
-        else if (IsAllGlyphs)
+        else if (Arguments.IsAllGlyphs)
         {
             stringBuilder.Append(cultureInfo, $@" -allglyphs");
         }
 
-        stringBuilder.Append(cultureInfo, $@" -type {AtlasType.ToString().ToLowerInvariant()}");
-        stringBuilder.Append(cultureInfo, $@" -format {AtlasImageFormat.ToString().ToLowerInvariant()}");
-        stringBuilder.Append(cultureInfo, $@" -imageout ""{Path.Combine(folder, $"{outputName}.{AtlasImageFormat.ToString().ToLowerInvariant()}")}""");
+        stringBuilder.Append(cultureInfo, $@" -type {Arguments.AtlasType.ToString().ToLowerInvariant()}");
+        stringBuilder.Append(cultureInfo, $@" -format {Arguments.AtlasImageFormat.ToString().ToLowerInvariant()}");
+        stringBuilder.Append(cultureInfo, $@" -imageout ""{Path.Combine(folder, $"{outputName}.{Arguments.AtlasImageFormat.ToString().ToLowerInvariant()}")}""");
 
-        if (IsOutputJson)
+        if (Arguments.IsOutputJson)
         {
             stringBuilder.Append(cultureInfo, $@" -json ""{Path.Combine(folder, $"{outputName}.json")}""");
         }
 
-        if (IsOutputCsv)
+        if (Arguments.IsOutputCsv)
         {
             stringBuilder.Append(cultureInfo, $@" -csv ""{Path.Combine(folder, $"{outputName}.csv")}""");
         }
 
-        if (IsOutputArFont)
+        if (Arguments.IsOutputArFont)
         {
             stringBuilder.Append(cultureInfo, $@" -arfont ""{Path.Combine(folder, $"{outputName}.arfont")}""");
         }
 
-        if (IsOutputShadronPreview)
+        if (Arguments.IsOutputShadronPreview)
         {
             stringBuilder.Append(cultureInfo, $@" -shadron ""{Path.Combine(folder, $"{outputName}.shadron")}""");
         }
@@ -163,9 +135,10 @@ public partial class Generator : ObservableObject
 
         StringBuilder stringBuilder = new();
 
-        stringBuilder.Append(cultureInfo, $@" -font ""{FontFilePath}""");
-        stringBuilder.Append(cultureInfo, $@" -size {FontSize}");
-        stringBuilder.Append(cultureInfo, $@" -type {AtlasType.ToString().ToLowerInvariant()}");
+        stringBuilder.Append(cultureInfo, $@" -font ""{Arguments.FontFilePath}""");
+        stringBuilder.Append(cultureInfo, $@" -fontscale {Arguments.FontScale}");
+        stringBuilder.Append(cultureInfo, $@" -pxpadding {Arguments.Padding}");
+        stringBuilder.Append(cultureInfo, $@" -type {Arguments.AtlasType.ToString().ToLowerInvariant()}");
         stringBuilder.Append(cultureInfo, $@" -format bin");
         stringBuilder.Append(cultureInfo, $@" -imageout ""{outputBin}""");
         stringBuilder.Append(cultureInfo, $@" -json ""{outputJson}""");
@@ -179,7 +152,7 @@ public partial class Generator : ObservableObject
 
         byte[] bgra = new byte[bin.Length / GetChannelCount() * 4];
 
-        switch (AtlasType)
+        switch (Arguments.AtlasType)
         {
             case AtlasType.HardMask:
             case AtlasType.SoftMask:
@@ -230,7 +203,7 @@ public partial class Generator : ObservableObject
 
     private int GetChannelCount()
     {
-        return AtlasType switch
+        return Arguments.AtlasType switch
         {
             AtlasType.HardMask => 1,
             AtlasType.SoftMask => 1,

@@ -23,10 +23,9 @@ public static class ProcessHelpers
 
     public static void RunCmd(string fileName,
                               string? arguments = null,
-                              Action<Log>? outputReceived = null,
-                              Action<Log>? errorReceived = null)
+                              OutputData? outputData = null)
     {
-        Process process = StartCmd(fileName, arguments, outputReceived, errorReceived);
+        Process process = StartCmd(fileName, arguments, outputData);
 
         process.WaitForExit();
 
@@ -35,10 +34,9 @@ public static class ProcessHelpers
 
     public static async Task RunCmdAsync(string fileName,
                                          string? arguments = null,
-                                         Action<Log>? outputReceived = null,
-                                         Action<Log>? errorReceived = null)
+                                         OutputData? outputData = null)
     {
-        Process process = StartCmd(fileName, arguments, outputReceived, errorReceived);
+        Process process = StartCmd(fileName, arguments, outputData);
 
         await process.WaitForExitAsync();
 
@@ -47,8 +45,7 @@ public static class ProcessHelpers
 
     private static Process StartCmd(string fileName,
                                     string? arguments = null,
-                                    Action<Log>? outputReceived = null,
-                                    Action<Log>? errorReceived = null)
+                                    OutputData? outputData = null)
     {
         ProcessStartInfo startInfo = new()
         {
@@ -69,14 +66,14 @@ public static class ProcessHelpers
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
-                outputReceived?.Invoke(new Log(LogType.Info, e.Data));
+                outputData?.AddLog(new Log(LogType.Info, e.Data));
             }
         };
         process.ErrorDataReceived += (sender, e) =>
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
-                errorReceived?.Invoke(new Log(LogType.Error, e.Data));
+                outputData?.AddLog(new Log(LogType.Error, e.Data));
             }
         };
 

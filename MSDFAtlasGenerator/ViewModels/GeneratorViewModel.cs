@@ -5,43 +5,12 @@ using MSDFAtlasGenerator.Contracts;
 using MSDFAtlasGenerator.Enums;
 using MSDFAtlasGenerator.Helpers;
 using MSDFAtlasGenerator.Models;
-using MSDFAtlasGenerator.Tools;
 using MSDFAtlasGenerator.Views;
 
 namespace MSDFAtlasGenerator.ViewModels;
 
 public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<GeneratorPage>(view)
 {
-    [ObservableProperty]
-    private string? fontFilePath;
-
-    [ObservableProperty]
-    private double fontSize = 64;
-
-    [ObservableProperty]
-    private string? charsetFilePath;
-
-    [ObservableProperty]
-    private bool isAllGlyphs;
-
-    [ObservableProperty]
-    private AtlasType atlasType = AtlasType.MSDF;
-
-    [ObservableProperty]
-    private AtlasImageFormat atlasImageFormat = AtlasImageFormat.Png;
-
-    [ObservableProperty]
-    private bool isOutputJson = true;
-
-    [ObservableProperty]
-    private bool isOutputCsv;
-
-    [ObservableProperty]
-    private bool isOutputArFont;
-
-    [ObservableProperty]
-    private bool isOutputShadronPreview;
-
     [ObservableProperty]
     private Generator generator = new();
 
@@ -54,15 +23,19 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
     [RelayCommand]
     private void Preview()
     {
-        UpdateGenerator();
+        OutputData.AddLog(new Log(LogType.Info, "--- Preview ---"));
 
-        if (Generator.GeneratePreview(out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? rgba))
+        if (Generator.GeneratePreview(OutputData, out JsonAtlasMetrics? jsonAtlasMetrics, out byte[]? rgba))
         {
             PreviewData = new PreviewData(jsonAtlasMetrics!.Atlas.Width,
                                           jsonAtlasMetrics.Atlas.Height,
                                           rgba,
                                           jsonAtlasMetrics!.Atlas.YOrigin == YDirection.Bottom);
+
+            OutputData.AddLog(new Log(LogType.Info, "Preview completed."));
         }
+
+        OutputData.AddLog(new Log(LogType.Info, "--- End ---"));
     }
 
     [RelayCommand]
@@ -72,9 +45,7 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
 
         if (openFolderDialog.ShowDialog() == true)
         {
-            OutputData.ClearLog();
-
-            UpdateGenerator();
+            OutputData.AddLog(new Log(LogType.Info, "--- Generation ---"));
 
             if (await Generator.Generate(openFolderDialog.FolderName, OutputData))
             {
@@ -83,20 +54,8 @@ public partial class GeneratorViewModel(GeneratorPage view) : ViewModel<Generato
                 OutputData.AddLog(new Log(LogType.Info, "Output folder opened."));
                 OutputData.AddLog(new Log(LogType.Info, "Generation completed."));
             }
-        }
-    }
 
-    private void UpdateGenerator()
-    {
-        Generator.FontFilePath = FontFilePath;
-        Generator.FontSize = FontSize;
-        Generator.CharsetFilePath = CharsetFilePath;
-        Generator.IsAllGlyphs = IsAllGlyphs;
-        Generator.AtlasType = AtlasType;
-        Generator.AtlasImageFormat = AtlasImageFormat;
-        Generator.IsOutputJson = IsOutputJson;
-        Generator.IsOutputCsv = IsOutputCsv;
-        Generator.IsOutputArFont = IsOutputArFont;
-        Generator.IsOutputShadronPreview = IsOutputShadronPreview;
+            OutputData.AddLog(new Log(LogType.Info, "--- End ---"));
+        }
     }
 }

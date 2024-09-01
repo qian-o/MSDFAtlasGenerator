@@ -11,11 +11,17 @@ public partial class OutputData : ObservableObject
 
     public void AddLog(Log log)
     {
-        Application.Current.Dispatcher.Invoke(() => Logs.Add(log));
+        lock (Logs)
+        {
+            Application.Current.Dispatcher.InvokeAsync(() => Logs.Add(log));
+        }
     }
 
     public void ClearLog()
     {
-        Application.Current.Dispatcher.Invoke(Logs.Clear);
+        lock (Logs)
+        {
+            Application.Current.Dispatcher.InvokeAsync(Logs.Clear);
+        }
     }
 }

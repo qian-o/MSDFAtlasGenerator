@@ -8,7 +8,7 @@ public partial class Log : ObservableObject
     public Log(LogType type, string message)
     {
         Type = type;
-        Message = message;
+        Message = $"[{DateTime.Now:HH:mm:ss}] {message}";
     }
 
     [ObservableProperty]
