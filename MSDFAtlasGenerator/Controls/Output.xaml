@@ -8,7 +8,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              x:Name="Main">
-    <Grid>
+    <ScrollViewer ScrollChanged="ScrollChanged">
         <ItemsControl ItemsSource="{Binding ElementName=Main, Path=OutputData.Logs}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="models:Log">
@@ -17,5 +17,5 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

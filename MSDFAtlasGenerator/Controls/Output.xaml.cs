@@ -21,4 +21,12 @@ public partial class Output : UserControl
         get { return (OutputData)GetValue(OutputDataProperty); }
         set { SetValue(OutputDataProperty, value); }
     }
+
+    private void ScrollChanged(object sender, ScrollChangedEventArgs e)
+    {
+        if (e.ExtentHeightChange > 0.0)
+        {
+            ((ScrollViewer)sender).ScrollToBottom();
+        }
+    }
 }

@@ -9,7 +9,8 @@
                 xmlns:viewmodels="clr-namespace:MSDFAtlasGenerator.ViewModels"
                 mc:Ignorable="d"
                 d:DataContext="{d:DesignInstance viewmodels:GeneratorViewModel}"
-                Title="GeneratorPage">
+                Title="GeneratorPage"
+                ScrollViewer.CanContentScroll="False">
 
     <Grid Margin="42">
         <Grid.ColumnDefinitions>
