@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MSDFAtlasGenerator.Helpers;
 using MSDFAtlasGenerator.Models;
 using Wpf.Ui.Controls;
 
@@ -16,6 +17,14 @@ public partial class Output : UserControl
     public Output()
     {
         InitializeComponent();
+
+        Loaded += (_, _) =>
+        {
+            if (OutputData != null && VisualTreeHelpers.GetChildByType<ScrollViewer>(this) is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToBottom();
+            }
+        };
     }
 
     public OutputData? OutputData
