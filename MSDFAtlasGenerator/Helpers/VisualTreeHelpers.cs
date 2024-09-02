@@ -16,9 +16,7 @@ public static class VisualTreeHelpers
                 return result;
             }
 
-            T? childOfChild = GetChildByType<T>(child);
-
-            if (childOfChild != null)
+            if (GetChildByType<T>(child) is T childOfChild)
             {
                 return childOfChild;
             }
