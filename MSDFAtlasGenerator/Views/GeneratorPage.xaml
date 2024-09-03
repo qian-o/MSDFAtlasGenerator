@@ -43,8 +43,8 @@
 
                         <controls:NumberEditor Margin="0,24,0,0"
                                                Title="Font Size (em)"
-                                               MinValue="1"
-                                               MaxValue="80"
+                                               MinValue="0.1"
+                                               MaxValue="10"
                                                Value="{Binding Generator.Arguments.FontScale, Mode=TwoWay}"
                                                DecimalPlaces="2"
                                                Step="0.5" />
