@@ -28,20 +28,20 @@ public partial class OpenFileEditor : Editor
 
     public string Filter
     {
-        get { return (string)GetValue(FilterProperty); }
-        set { SetValue(FilterProperty, value); }
+        get => (string)GetValue(FilterProperty);
+        set => SetValue(FilterProperty, value);
     }
 
     public bool IsMultiselect
     {
-        get { return (bool)GetValue(IsMultiselectProperty); }
-        set { SetValue(IsMultiselectProperty, value); }
+        get => (bool)GetValue(IsMultiselectProperty);
+        set => SetValue(IsMultiselectProperty, value);
     }
 
     public string FilePath
     {
-        get { return (string)GetValue(FilePathProperty); }
-        set { SetValue(FilePathProperty, value); }
+        get => (string)GetValue(FilePathProperty);
+        set => SetValue(FilePathProperty, value);
     }
 
     private void BrowseFile_Click(object sender, RoutedEventArgs e)

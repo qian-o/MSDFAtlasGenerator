@@ -16,8 +16,8 @@ public class Preview : Control
 
     public PreviewData? PreviewData
     {
-        get { return (PreviewData?)GetValue(PreviewDataProperty); }
-        set { SetValue(PreviewDataProperty, value); }
+        get => (PreviewData?)GetValue(PreviewDataProperty);
+        set => SetValue(PreviewDataProperty, value);
     }
 
     private WriteableBitmap? previewImage;

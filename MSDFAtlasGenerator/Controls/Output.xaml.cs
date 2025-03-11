@@ -29,8 +29,8 @@ public partial class Output : UserControl
 
     public OutputData? OutputData
     {
-        get { return (OutputData)GetValue(OutputDataProperty); }
-        set { SetValue(OutputDataProperty, value); }
+        get => (OutputData)GetValue(OutputDataProperty);
+        set => SetValue(OutputDataProperty, value);
     }
 
     private void ScrollChanged(object sender, ScrollChangedEventArgs e)

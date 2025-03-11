@@ -17,7 +17,7 @@ public partial class CheckBoxEditor : Editor
 
     public bool IsChecked
     {
-        get { return (bool)GetValue(IsCheckedProperty); }
-        set { SetValue(IsCheckedProperty, value); }
+        get => (bool)GetValue(IsCheckedProperty);
+        set => SetValue(IsCheckedProperty, value);
     }
 }
